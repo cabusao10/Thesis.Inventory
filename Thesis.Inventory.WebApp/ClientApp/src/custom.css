@@ -1,0 +1,231 @@
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+code {
+  color: #E01A76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.center {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  color: #00425a;
+  width: 600px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  /* Add box shadow */
+}
+
+.registrationbuttons {
+  margin-top: 15px;
+}
+
+.mainbg {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  /* Align content to the left */
+  align-items: center;
+}
+
+/** card container**/
+.container--card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.card--wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.main--title {
+  color: rgba(113, 99, 186, 255);
+  padding-bottom: 10px;
+  font-size: 15px;
+}
+
+.payment--card {
+  background: rgb(229, 223, 223);
+  border-radius: 10px;
+  padding: 1.2rem;
+  width: 290px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.5s ease-in-out;
+}
+
+.payment--card:hover {
+  transform: translateY(-5px);
+}
+
+.card--header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.amount {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.amount--value {
+  font-size: 24px;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 600;
+}
+
+.icon {
+  color: #fff;
+  padding: 1rem;
+  height: 60px;
+  width: 60px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  background: #00425a;
+}
+
+.card--detail {
+  font-size: 18px;
+  color: #777777;
+  letter-spacing: 2px;
+  font-family: "Courier New", Courier, monospace;
+}
+
+/***** tabular section******/
+.tabular--wrapper {
+  background: #fff;
+  margin-top: 1rem;
+  border-radius: 10px;
+  padding: 2rem;
+}
+
+.table-container {
+  width: 100%;
+}
+
+.table-container button {
+  color: #00425a;
+  background: none;
+  cursor: pointer;
+}
+
+.sidebar {
+  width: 250px;
+  position: fixed;
+  left: 0;
+}
+
+.frame {
+  height: 100%;
+  width: 100%;
+  padding-left: 270px;
+  background-color: #EBE9E9;
+  padding-top: 20px;
+  padding-right: 20px;
+
+}
+
+.page-header {
+  background-color: #fff;
+  border-radius: 10px;
+  height: 89px;
+  padding-top: 23px;
+  padding-left: 18px;
+  align-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.product-menu {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.divbutton {
+  width: auto;
+  justify-content: space-between;
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+
+}
+
+.yesno .footer {
+  display: flex;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.yesno {
+  height: 130px;
+  position: relative;
+}
+
+.divsearch {
+  width: 310px;
+  justify-content: space-between;
+  display: block;
+  margin-left: 0;
+  margin-right: auto;
+
+}
+
+.modal-body {
+  flex: '4 4 auto';
+  padding: 0 24px 24px 24px;
+  overflow-y: 'hidden';
+  width: 490px;
+}
+
+.modal-header {
+  flex: '1 1 auto';
+  border-top: '4px solid';
+  display: 'flex';
+  align-items: 'center';
+  font-weight: 14px;
+  padding: 12px 12px 14px 24px;
+}
+
+.modal-container {
+  display: 'flex';
+  flex-flow: 'column nowrap';
+  align-items: 'stretch';
+}

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Thesis.Inventory.MobileApp.Pages.HomePage"
+             xmlns:views="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
+             x:DataType="views:ProfileViewModel"
+             xmlns:models="clr-namespace:Thesis.Inventory.MobileApp.Model"
+             xmlns:dto="clr-namespace:Thesis.Inventory.Shared.DTOs.Order.Response;assembly=Thesis.Inventory.Shared"
+             Title="HomePage">
+    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshCommand}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="320"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <VerticalStackLayout Spacing="10" Grid.Row="0">
+                <Border HeightRequest="160"
+                        WidthRequest="160"
+                        StrokeShape="RoundRectangle 80,80,80,80"
+                        HorizontalOptions="Center"
+                        StrokeThickness="8"
+                        Margin="0,0,0,0">
+
+                    <Image Aspect="AspectFit"
+                           Source="dotnet_bot.png"
+                           SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                           HeightRequest="160"
+                           WidthRequest="160"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+                </Border>
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Image Source="profile_user"
+                           HeightRequest="20"
+                           Margin="0,0,5,0"
+                           WidthRequest="20" />
+                    <Label Text="{Binding Profile.Fullname}" />
+                    <Image HeightRequest="15"
+                           Margin="2,0,0,0"
+                           WidthRequest="15">
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image"
+                                         Binding="{Binding Profile.Gender}"
+                                         Value="Male">
+                                <Setter Property="Source"
+                                        Value="male.png" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image"
+                                         Binding="{Binding Gender}"
+                                         Value="Female">
+                                <Setter Property="Source"
+                                        Value="female.png" />
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Image Source="email"
+                           HeightRequest="20"
+                           Margin="0,0,5,0"
+                           WidthRequest="20" />
+                    <Label Text="{Binding Profile.Email}" />
+
+                </HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Image Source="address.png"
+                           HeightRequest="20"
+                           Margin="0,0,5,0"
+                           WidthRequest="20" />
+                    <Label Text="{Binding Profile.Address}" />
+                </HorizontalStackLayout>
+
+                <Label Text="{Binding Profile.ZipCode}"
+                       HorizontalOptions="Center" />
+
+                <Label Text="Orders"
+                       FontSize="Large"
+                       Background="#F0F2F5" />
+
+       
+
+            </VerticalStackLayout>
+            <ScrollView Grid.Row="1">
+                <Grid>
+                    <ListView ItemsSource="{Binding Orders}"
+                              SelectionMode="None"
+                              RowHeight="90">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:UserOrderModel">
+                                <ViewCell>
+                                    <Grid HeightRequest="100"
+                                          BackgroundColor="White">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition  Width="*" />
+                                            <ColumnDefinition Width="100" />
+
+                                        </Grid.ColumnDefinitions>
+                                        <ImageButton HeightRequest="100"
+                                                     WidthRequest="100"
+                                                     Source="{Binding Product.Image}" />
+                                        <VerticalStackLayout Grid.Column="1">
+                                            <Label Text="{Binding Product.ProductName}"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#72767D"
+                                                   FontSize="Subtitle" />
+                                            <HorizontalStackLayout>
+                                                <Label Text="₱ "
+                                                       FontAttributes="Bold"
+                                                       TextColor="#FD5853"
+                                                       FontSize="Body" />
+
+                                                <Label Text="{Binding Product.Price}"
+                                                       FontAttributes="Bold"
+                                                       TextColor="#FD5853"
+                                                       FontSize="Body" />
+
+                                            </HorizontalStackLayout>
+
+                                            <Label Text="Quantity" />
+                                            <Label Text="{Binding Quantity}" />
+
+                                        </VerticalStackLayout>
+                                        <Label Grid.Column="2"
+                                               Text="{Binding Status}"
+                                               FontSize="Medium"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Status}"
+                                                             Value="Delivered">
+                                                    <Setter  Property="TextColor"
+                                                             Value="#3CA373" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Status}"
+                                                             Value="Shipped">
+                                                    <Setter  Property="TextColor"
+                                                             Value="#00B0E5" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Status}"
+                                                             Value="Packed">
+                                                    <Setter  Property="TextColor"
+                                                             Value="#1F586A" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Status}"
+                                                             Value="Cancelled">
+                                                    <Setter  Property="TextColor"
+                                                             Value="#D9512C" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Status}"
+                                                             Value="Pending">
+                                                    <Setter  Property="TextColor"
+                                                             Value="#F7CB73" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+
+                                        <Button HeightRequest="40"
+                                                WidthRequest="90"
+                                                Text="Cancel"
+                                                IsVisible="False"
+                                              IsEnabled="True"
+                                                Command="{Binding CancelOrderCommand}"
+                                                Grid.Column="2">
+                                            <Button.Triggers>
+                                              
+                                                <DataTrigger TargetType="Button"
+                                                             Binding="{Binding Status}"
+                                                             Value="Pending">
+                                                    <Setter Property="IsVisible"
+                                                            Value="True" />
+                                                </DataTrigger>
+                                            </Button.Triggers>
+                                        </Button>
+                                    </Grid>
+                                </ViewCell>
+
+
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </ScrollView>
+        </Grid>
+       
+    </RefreshView>
+</ContentPage>

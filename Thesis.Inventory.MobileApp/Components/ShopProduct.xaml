@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
+             xmlns:model="clr-namespace:Thesis.Inventory.MobileApp.Model"
+             x:DataType="views:ShopProductViewModel"
+             x:Name="myProduct"
+             x:Class="Thesis.Inventory.MobileApp.Components.ShopProduct">
+    <VerticalStackLayout>
+        
+        <Frame Padding="-5,0,-5,5"
+               BackgroundColor="White"
+               Margin="5,10,5,0">
+
+            <Grid  RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="150" />
+                    <RowDefinition Height="110" />
+                </Grid.RowDefinitions>
+
+                <Grid WidthRequest="175"
+                      x:DataType="model:ProductModel"
+                      Margin="10,0,10,0">
+                    <ImageButton HeightRequest="120"
+                                 WidthRequest="120"
+                                 CornerRadius="10"
+                                 Margin="18"
+                                 Source="{Binding Image}" />
+
+                </Grid>
+                <Grid Grid.Row="1"
+                      WidthRequest="175"
+                      Margin="10,0,10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="6*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid   x:DataType="model:ProductModel">
+
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label Text="{Binding ProductName}"
+                                   FontAttributes="Bold"
+                                   TextColor="#72767D"
+                                   FontSize="Subtitle" />
+                            <HorizontalStackLayout Grid.Row="1">
+                                <Label Text="₱ "
+                                       FontAttributes="Bold"
+                                       TextColor="#FD5853"
+                                       FontSize="Subtitle" />
+
+                                <Label Text="{Binding Price}"
+                                       FontAttributes="Bold"
+                                       TextColor="#FD5853"
+                                       FontSize="Title" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+
+                    </Grid>
+                    <Grid  Grid.Row="1"
+                          x:DataType="views:ShopProductViewModel">
+                        <ImageButton BackgroundColor="#F1F1F2"
+                                     HeightRequest="65"
+                                     Padding="8"
+                                     CornerRadius="5"
+                                     BorderColor="Black"
+                                     Command="{Binding AddToCartCommand}"
+                                     Source="add_to_cart.png" />
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </Frame>
+    </VerticalStackLayout>
+
+</ContentView>

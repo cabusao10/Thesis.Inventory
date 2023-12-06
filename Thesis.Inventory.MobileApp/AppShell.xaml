@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell x:Class="Thesis.Inventory.MobileApp.AppShell"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:Thesis.Inventory.MobileApp"
+       xmlns:views="clr-namespace:Thesis.Inventory.MobileApp.Pages"
+       Shell.TabBarBackgroundColor="#00425A"
+       Shell.FlyoutBehavior="Disabled">
+
+
+    <TabBar x:Name="tabbar">
+        <Tab 
+             
+             x:Name="loginTab"
+             CurrentItem="{x:Reference mainpage}"
+             Icon="icon_profile.png">
+
+            <ShellContent x:Name="mainpage"
+                          Shell.TabBarIsVisible="false"
+                          ContentTemplate="{DataTemplate local:MainPage}" />
+
+        </Tab>
+        <Tab 
+             Icon="icon_shop.png">
+            <ShellContent Route="shop"
+                          ContentTemplate="{DataTemplate views:ShopPage}" />
+        </Tab>
+        <Tab 
+             Icon="icon_cart.png">
+            <ShellContent Route="shop"
+                          ContentTemplate="{DataTemplate views:CartPage}" />
+        </Tab>
+        <Tab 
+             Icon="icon_setting.png">
+            <ShellContent Route="settings"
+                          ContentTemplate="{DataTemplate views:RegisterPage}" />
+        </Tab>
+
+    </TabBar>
+
+</Shell>

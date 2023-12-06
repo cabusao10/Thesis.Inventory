@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Thesis.Inventory.MobileApp.Pages.CartPage"
+             xmlns:views="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
+             x:DataType="views:CartViewModel"
+             BackgroundColor="#FAFAFA"
+             xmlns:models="clr-namespace:Thesis.Inventory.MobileApp.Model"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Loaded="ContentPage_Loaded"
+             Title="CartPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <RefreshView IsEnabled="True"
+                 IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshCommand}">
+        <ScrollView>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition  Height="*" />
+                    <RowDefinition  Height="50" />
+                </Grid.RowDefinitions>
+               
+                <ListView ItemsSource="{Binding Carts}"
+                          SelectionMode="None"
+                          RowHeight="170">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:CartItemModel">
+                            <ViewCell>
+                                <SwipeView Padding="0,0,0,10">
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="Delete"
+                                                       IconImageSource="delete_icon.png"
+                                                       Command="{Binding DeleteItemCommand}"
+                                                       Invoked="SwipeItem_Invoked"
+                                                       BackgroundColor="LightPink">
+
+                                            </SwipeItem>
+
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    <!-- Content -->
+                                    <Grid HeightRequest="170"
+                                          BackgroundColor="White">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition  Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <HorizontalStackLayout Spacing="0">
+                                            <CheckBox IsChecked="{Binding IsSelected}"
+                                                      Margin="0"
+                                                      CheckedChanged="CheckBox_CheckedChanged" />
+                                            <ImageButton HeightRequest="100"
+                                                         WidthRequest="100"
+                                                         Source="{Binding Product.Image}" />
+                                        </HorizontalStackLayout>
+                                        <VerticalStackLayout Grid.Column="1">
+                                            <Label Text="{Binding Product.ProductName}"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#72767D"
+                                                   FontSize="Subtitle" />
+                                            <HorizontalStackLayout>
+                                                <Label Text="₱ "
+                                                       FontAttributes="Bold"
+                                                       TextColor="#FD5853"
+                                                       FontSize="Subtitle" />
+
+                                                <Label Text="{Binding Product.Price}"
+                                                       FontAttributes="Bold"
+                                                       TextColor="#FD5853"
+                                                       FontSize="Title" />
+
+                                            </HorizontalStackLayout>
+
+                                            <Label Text="Quantity" />
+
+                                            <Entry Keyboard="Numeric"
+                                                   Text="{Binding Quantity}"
+                                                   Placeholder="Enter Quantity" />
+                                            <Stepper x:Name="stepper"
+                                                     Minimum="0"
+                                                     HeightRequest="50"
+                                                     Increment="1"
+                                                     Maximum="{Binding Product.Quantity}"
+                                                     Value="{Binding Quantity}" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </SwipeView>
+                            </ViewCell>
+
+
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Grid  IsVisible="{Binding IsEmptyVisible}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <ScrollView>
+                        <VerticalStackLayout 
+                                             HorizontalOptions="Center"
+                                             VerticalOptions="Center">
+                            <Label Text="Your cart is empty." 
+                                   VerticalOptions="Center"/>
+
+                            <ImageButton Source="icon_refresh.png"
+                                         HeightRequest="50"
+                                         CornerRadius="15"
+                                         Command="{Binding RefreshCommand}"
+                                         WidthRequest="50" />
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </Grid>
+                <Button WidthRequest="120"
+                        IsVisible="{Binding ThereIsSelected}"
+                        Grid.Row="1"
+                        Command="{Binding CheckOutCommand}"
+                        Text="Checkout" />
+            </Grid>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

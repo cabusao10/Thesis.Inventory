@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Thesis.Inventory.MobileApp.Pages.ShopPage"
+             xmlns:view="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
+             xmlns:model="clr-namespace:Thesis.Inventory.Shared.DTOs.Product.Response;assembly=Thesis.Inventory.Shared"
+             x:Name="myshopPage"
+             x:DataType="view:ShopPageViewModel"
+             BackgroundColor="#FAFAFA"
+             xmlns:control="clr-namespace:Thesis.Inventory.MobileApp.Components"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="ShopPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshingCommand}">
+        <ScrollView>
+            <VerticalStackLayout x:Name="verStack">
+
+                <SearchBar Placeholder="Search for a product"
+                           BackgroundColor="#EBE9E9"/>
+                
+                <CollectionView ItemsSource="{Binding Products}"
+                                ItemsLayout="VerticalGrid, 2">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <control:ShopProduct />
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+
+</ContentPage>

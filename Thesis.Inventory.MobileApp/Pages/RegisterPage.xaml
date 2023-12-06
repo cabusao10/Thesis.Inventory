@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Thesis.Inventory.MobileApp.Pages.RegisterPage"
+             xmlns:viewmodel="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
+             x:DataType="viewmodel:RegisterViewModel"
+             Title="RegisterPage">
+    <ScrollView>
+        <VerticalStackLayout Spacing="25"
+                             Padding="30,0"
+                             VerticalOptions="Center">
+
+            <Label Text="Register a new account!"
+                   SemanticProperties.HeadingLevel="Level1"
+                   FontSize="32"
+                   HorizontalOptions="Center" />
+            <Label Text="Username" />
+            <Entry Placeholder="Username"
+                   Text="{Binding Username}">
+
+            </Entry>
+
+            <Label Text="Password" />
+            <Entry IsPassword="True"
+                   Placeholder="Password"
+                   Text="{Binding Password}"></Entry>
+
+            <Label Text="Confirm Password" />
+            <Entry IsPassword="True"
+                   Placeholder="Confirm password"
+                   Text="{Binding Confirmpassword}" />
+
+            <Label Text="Email" />
+            <Entry Keyboard="Email"
+                   Placeholder="Email"
+                   Text="{Binding Email}" />
+
+            <Label Text="Full Name" />
+            <Entry Placeholder="Fullname"
+                   Text="{Binding Fullname}" />
+
+            <Label Text="Phone Number" />
+            <Entry Placeholder="Phone number"
+                   Keyboard="Telephone"
+                   Text="{Binding ContactNumber}" />
+
+            <Label Text="Address" />
+            <Entry Placeholder="Address"
+                   Text="{Binding Address}" />
+
+            <Label Text="Zip Code" />
+            <Entry Placeholder="Zip Code"
+                   Text="{Binding ZipCode}" />
+
+            <Label Text="Province" />
+            <Picker Title="Province"
+                    SelectedIndex="{Binding ProvinceId}"
+                    ItemsSource="{Binding Provinces}" />
+
+            <Label Text="Birthday" />
+            <DatePicker Date="{Binding BirthDate}"/>
+
+            <Label Text="Gender" />
+            <Picker  Title="Gender" SelectedItem="{Binding Gender}">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Male</x:String>
+                        <x:String>Female</x:String>
+                        <x:String>Better not to say</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Button x:Name="registerBtn"
+                    Text="Register"
+                    Command="{Binding RegisterCommand}"
+                    HorizontalOptions="Center">
+
+            </Button>
+
+            <Button Text="Already have an account?"
+                    Command="{Binding BackToLoginCommand}"
+                    HorizontalOptions="Center"
+                    BackgroundColor="#FFFFFF"
+                   
+                    TextColor="#7289DA" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
