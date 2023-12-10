@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Thesis.Inventory.MobileApp.Pages.ChatPage"
+             xmlns:views="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
+             x:DataType="views:ChatViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:models="clr-namespace:Thesis.Inventory.MobileApp.Model"
+             Title="ChatPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+
+        <CollectionView ItemsSource="{Binding Messages}"
+                  
+                  ItemsUpdatingScrollMode="KeepLastItemInView"
+                  VerticalOptions="FillAndExpand"
+                  SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ChatModel">
+                    <Grid>
+                        <Border Stroke="#A0A0A0"
+                                BackgroundColor="#F0F0F0"
+                                HorizontalOptions="StartAndExpand"
+                                StrokeShape="RoundRectangle 0,10,10,10"
+                                Margin="5,10,30,0">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding isYou}" Value="True">
+                                    <Setter Property="StrokeShape"
+                                            Value="RoundRectangle 10,0,10,10" />
+                                    <Setter Property="Stroke"
+                                            Value="#43B581" />
+                                    <Setter Property="HorizontalOptions"
+                                            Value="EndAndExpand" />
+                                    <Setter Property="Margin"
+                                            Value="30,10,5,0" />
+                                    <Setter Property="BackgroundColor"
+                                            Value="#C0E6D5" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Grid 
+                                 
+                                  Margin="10,10,10,10"
+                                  Padding="10,5,10,10">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding User}"
+                                           FontSize="Medium">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding isYou}"
+                                                         Value="True">
+                                                <Setter Property="TextColor"
+                                                        Value="#215A40" />
+                                                <Setter Property="FontAttributes"
+                                                        Value="Bold" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding isYou}"
+                                                         Value="False">
+                                                <Setter Property="TextColor"
+                                                        Value="#F04747" />
+                                            </DataTrigger>
+
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label Text="{Binding Message}"
+                                           TextColor="Black" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <VerticalStackLayout Padding="10,0,10,0"
+                             Grid.Row="1">
+            <Entry Text="{Binding Chat}"
+                   Keyboard="Chat">
+                <Entry.Behaviors>
+                    <toolkit:EventToCommandBehavior  EventName="Completed" Command="{Binding SendMessageCommand}"/>
+                </Entry.Behaviors>
+            </Entry>
+            <Button Text="Send"
+                    Command="{Binding SendMessageCommand}" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

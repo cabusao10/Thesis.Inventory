@@ -21,7 +21,8 @@ namespace Thesis.Inventory.Infrastructure.Context
         public DbSet<UOMEntity> UOM { get; set; }
         public DbSet<ProductCategoryEntity> ProductCategories { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
-        public DbSet<ShoppingCartEntity> ShoppingCarts { get; set; }
+        public DbSet<ChatRoomEntity> ChatRooms { get; set; }
+        public DbSet<ChatMessageEntity> ChatRoomMessages { get; set; }
 
         public async Task<int> SaveChanges()
         {

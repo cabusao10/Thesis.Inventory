@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                x:Class="Thesis.Inventory.MobileApp.Popups.CheckOutPopUp"
+                xmlns:views="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
+                x:DataType="views:CheckOutViewModel"
+                VerticalOptions="End">
+    <Frame WidthRequest="400">
+        <VerticalStackLayout Spacing="5">
+            <Label Text="Total price"/>
+            <HorizontalStackLayout>
+                <Label Text="₱ "
+                       FontAttributes="Bold"
+                       TextColor="#FD5853"
+                       FontSize="Subtitle" />
+
+                <Label Text="{Binding TotalPrice}"
+                       FontAttributes="Bold"
+                       TextColor="#FD5853"
+                       FontSize="Title" />
+            </HorizontalStackLayout>
+            <Label  Text="Payment method"/>
+            <Picker Title="Select payment method"
+                    ItemsSource="{Binding PaymentMethods}"
+                    SelectedItem="{Binding PaymentType}"
+                  >
+            </Picker>
+            <Button Text="Check out" Command="{Binding CheckOutCommand}"/>
+        </VerticalStackLayout>
+    </Frame>
+</toolkit:Popup>

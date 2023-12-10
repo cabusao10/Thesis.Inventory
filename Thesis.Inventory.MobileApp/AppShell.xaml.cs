@@ -12,6 +12,8 @@ namespace Thesis.Inventory.MobileApp
             Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
             Routing.RegisterRoute(nameof(CartPage), typeof(CartPage));
             Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
+            Routing.RegisterRoute(nameof(VerifyUser), typeof(VerifyUser));
+            Routing.RegisterRoute(nameof(ChatPage), typeof(ChatPage));
         }
     }
 }

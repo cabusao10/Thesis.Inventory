@@ -20,6 +20,8 @@ namespace Thesis.Inventory.Infrastructure.UnitOfWork
         private IApplicationRepository<ProductCategoryEntity> _productCategoryRepo;
         private IApplicationRepository<OrderEntity> _orderRepo;
         private IApplicationRepository<ShoppingCartEntity> _shoppingCartRepo;
+        private IApplicationRepository<ChatRoomEntity> _chatRooms;
+        private IApplicationRepository<ChatMessageEntity> _chatRoomMessages;
         public ThesisUnitOfWork(IThesisDBContext dBContext,
             IApplicationRepository<UserEntity> userRepo,
             IApplicationRepository<CompanyEntity> companyRepo,
@@ -28,7 +30,10 @@ namespace Thesis.Inventory.Infrastructure.UnitOfWork
             IApplicationRepository<UOMEntity> uomRepo,
             IApplicationRepository<ProductCategoryEntity> productCategoryRepo,
             IApplicationRepository<OrderEntity> orderRepo,
-            IApplicationRepository<ShoppingCartEntity> shoppingCartRepo)
+            IApplicationRepository<ShoppingCartEntity> shoppingCartRepo,
+            IApplicationRepository<ChatRoomEntity> chatRooms,
+            IApplicationRepository<ChatMessageEntity> chatRoomMessages
+            )
         {
             _dbContext = dBContext;
             _userRepo = userRepo;
@@ -39,7 +44,8 @@ namespace Thesis.Inventory.Infrastructure.UnitOfWork
             _productCategoryRepo = productCategoryRepo;
             _orderRepo = orderRepo;
             _shoppingCartRepo = shoppingCartRepo;
-
+            _chatRoomMessages = chatRoomMessages;
+            _chatRooms = chatRooms;
         }
         public async Task<int> Save()
         {
@@ -53,6 +59,8 @@ namespace Thesis.Inventory.Infrastructure.UnitOfWork
         public IApplicationRepository<ProductCategoryEntity> ProductCategories { get { return _productCategoryRepo; } }
         public IApplicationRepository<OrderEntity> Orders { get { return _orderRepo; } }
         public IApplicationRepository<ShoppingCartEntity> ShoppingCarts { get { return _shoppingCartRepo; } }
+        public IApplicationRepository<ChatRoomEntity> ChatRooms { get { return _chatRooms; } }
+        public IApplicationRepository<ChatMessageEntity> ChatRoomMessages { get { return _chatRoomMessages; } }
 
     }
 }

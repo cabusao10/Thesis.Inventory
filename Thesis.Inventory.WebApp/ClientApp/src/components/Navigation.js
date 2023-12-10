@@ -87,6 +87,13 @@ const navLinkGroups: INavLinkGroup[] = [
                 target: '_blank',
             },
             {
+                name: 'Messages',
+                link: '/chat',
+                icon: 'Chat',
+                key: 'key10',
+                target: '_blank',
+            },
+            {
                 name: 'Settings',
 
                 icon: 'Settings',

@@ -14,6 +14,7 @@ using Thesis.Inventory.Shared.DTOs.Users.Responses;
 
 namespace Thesis.Inventory.MobileApp.ViewModel
 {
+    [QueryProperty("isSuccess","isSucess")]
     public partial class MainViewModel: ObservableObject
     {
         private readonly HttpClient _httpClient;
@@ -23,6 +24,9 @@ namespace Thesis.Inventory.MobileApp.ViewModel
             password = string.Empty;
             _httpClient = httpClient;
         }
+
+        [ObservableProperty]
+        bool isSuccess;
 
         [ObservableProperty]
         string username;
@@ -36,7 +40,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
             await AppShell.Current.GoToAsync(nameof(RegisterPage));
         }
         [RelayCommand]
-        async Task Login()
+        async void Login()
         {
             ToastDuration duration = ToastDuration.Short;
 
@@ -63,8 +67,14 @@ namespace Thesis.Inventory.MobileApp.ViewModel
                 await SecureStorage.Default.SetAsync("userid", response.Data.Id.ToString());
 
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", response.Data.BearerToken);
-
-                await AppShell.Current.GoToAsync(nameof(HomePage));
+                if(response.Data.Status == Shared.Enums.UserStatusType.Verified)
+                {
+                    await AppShell.Current.GoToAsync(nameof(HomePage));
+                }
+                else
+                {
+                    await AppShell.Current.GoToAsync(nameof(VerifyUser));
+                }
 
             }
             else

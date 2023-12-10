@@ -61,7 +61,7 @@ namespace Thesis.Inventory.UserManagement.Services.Commands
 
                     var encrpyted_password = ComputeHash(command.LoginUserRequest.Password, new SHA256CryptoServiceProvider());
 
-                    var user = await this.ThesisUnitOfWork.Users.Entities.FirstOrDefaultAsync(x => x.Username == request.Username && x.Password == encrpyted_password);
+                    var user = await this.ThesisUnitOfWork.Users.Entities.FirstOrDefaultAsync(x => x.Role != Shared.Enums.UserRoleType.Consumer && x.Username == request.Username && x.Password == encrpyted_password);
 
                     if (user != null)
                     {

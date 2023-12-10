@@ -6,6 +6,7 @@ import { Home } from "./components/Home";
 import { Inventory } from "./components/Inventory";
 import { Login } from "./components/Login";
 import { Main } from "./components/Main";
+import { Message } from "./components/Message";
 import { Orders } from "./components/Orders";
 import { Register } from "./components/Register";
 import Users from "./components/Users";
@@ -58,6 +59,11 @@ const AppRoutes = [
   {
     path: '/users',
     element: <Users />
+  }
+  ,
+  {
+    path: '/chat',
+    element: <Message />
   }
 ];
 

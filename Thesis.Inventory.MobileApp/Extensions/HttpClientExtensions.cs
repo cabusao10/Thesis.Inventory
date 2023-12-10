@@ -55,6 +55,13 @@ namespace Thesis.Inventory.MobileApp.Extensions
             return (Result<T>)Convert.ChangeType(response, typeof(Result<T>));
         }
 
+        public static async Task<Stream> GetImageStreamAsync(this HttpClient client, string endpoint)
+        {
+            var result = await client.GetAsync(endpoint);
+            var content = await result.Content.ReadAsStreamAsync();
+
+            return content;
+        }
         public static async Task<Result<T>> GetAsync<T>(this HttpClient client, string endpoint)
         {
             var result = await client.GetAsync(endpoint);

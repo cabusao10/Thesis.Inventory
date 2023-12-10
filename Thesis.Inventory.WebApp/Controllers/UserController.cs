@@ -39,6 +39,15 @@ namespace Thesis.Inventory.WebApp.Controllers
         }
 
         [HttpPost]
+        [Route("Verify")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Verify(VerifyUserRequest request)
+        {
+            var result = await this._mediator.Send(new VerifyUser(request, User));
+            return this.Ok(result);
+        }
+
+        [HttpPost]
         [Route("MobileLogin")]
         [AllowAnonymous]
         public async Task<IActionResult> MobileLogin(UserLoginRequest request)

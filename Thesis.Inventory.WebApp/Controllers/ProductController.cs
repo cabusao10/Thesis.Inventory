@@ -33,6 +33,7 @@ namespace Thesis.Inventory.WebApp.Controllers
             return this.Ok(result);
         }
 
+
         [HttpGet]
         [Route("GetAll")]
         public async Task<IActionResult> GetAll(int page)
@@ -40,6 +41,7 @@ namespace Thesis.Inventory.WebApp.Controllers
             var result = await this._mediator.Send(new GetProduct(page, 100));
             return this.Ok(result);
         }
+    
 
         [HttpGet]
         [Route("GetArchives")]

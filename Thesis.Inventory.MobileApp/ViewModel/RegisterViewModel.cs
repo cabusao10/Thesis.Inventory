@@ -105,7 +105,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
             }
             else
             {
-
+                Toast.Make(response.Message);
             }
         }
 

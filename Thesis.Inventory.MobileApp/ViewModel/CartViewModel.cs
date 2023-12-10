@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -13,6 +14,7 @@ using Thesis.Inventory.Shared.Models;
 
 namespace Thesis.Inventory.MobileApp.ViewModel
 {
+    [QueryProperty(nameof(IsSuccessPayment), "isSuccessPayment")]
     public partial class CartViewModel : ObservableObject
     {
         public CartViewModel()
@@ -20,12 +22,15 @@ namespace Thesis.Inventory.MobileApp.ViewModel
 
         }
         private readonly HttpClient _httpClient;
-        public CartViewModel(HttpClient httpClient)
+        private readonly IPopupService _popupService;
+        public CartViewModel(HttpClient httpClient, IPopupService popupService)
         {
             this._httpClient = httpClient;
+            this._popupService = popupService;
             GetCarts();
         }
-
+        [ObservableProperty]
+        bool isSuccessPayment;
         [ObservableProperty]
         List<CartItemModel> carts;
 
@@ -56,22 +61,31 @@ namespace Thesis.Inventory.MobileApp.ViewModel
             var selected = this.Carts.Where(x => x.IsSelected);
             if (selected.Any())
             {
-                var request = new CheckoutRequest
-                {
-                    CartIds = selected.Select(x => x.Id).ToArray(),
-                    PaymentType = Shared.Enums.PaymentType.Paypal,
-                };
-                var response = await _httpClient.PostAsync<bool>("Cart/Checkout",request);
 
-                if (response.Succeeded)
+                this._popupService.ShowPopup<CheckOutViewModel>(o =>
                 {
-                    GetCarts();
-                    Toast.Make(response.Message);
-                }
-                else
-                {
-                    Toast.Make(response.Message);
-                }
+                    o.TotalPrice = selected.Sum(x=> x.Quantity * x.Product.Price);
+                    o.CartId = selected.Select(x => x.Id).ToArray();
+                    o.PaymentType = "Cash on Delivery";
+                });
+
+                await Task.CompletedTask;
+                //var request = new CheckoutRequest
+                //{
+                //    CartIds = selected.Select(x => x.Id).ToArray(),
+                //    PaymentType = Shared.Enums.PaymentType.Paypal,
+                //};
+                //var response = await _httpClient.PostAsync<bool>("Cart/Checkout",request);
+
+                //if (response.Succeeded)
+                //{
+                //    GetCarts();
+                //    Toast.Make(response.Message);
+                //}
+                //else
+                //{
+                //    Toast.Make(response.Message);
+                //}
             }
         }
         public async void GetCarts()

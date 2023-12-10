@@ -12,6 +12,8 @@ using Thesis.Inventory.Shared.DTOs;
 using System.Net.Http.Headers;
 using Thesis.Inventory.MobileApp.Model;
 using CommunityToolkit.Maui.Core;
+using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Core.Extensions;
 
 namespace Thesis.Inventory.MobileApp.ViewModel
 {
@@ -28,8 +30,10 @@ namespace Thesis.Inventory.MobileApp.ViewModel
         public ShopProductViewModel TEst;
 
         [ObservableProperty]
-        List<ShopProductViewModel> products;
+        ObservableCollection<ShopProductViewModel> products;
 
+        [ObservableProperty]
+        ShopProductViewModel tmpproducts;
 
         [ObservableProperty]
         bool isRefreshing;
@@ -71,7 +75,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
                 {
                     CategoryId = x.CategoryId,
                     Id = x.Id,
-                    Image = ImageSource.FromStream(() => new MemoryStream(x.Image)),
+                  
                     Price = x.Price,
                     ProductId = x.ProductId,
                     ProductName = x.ProductName,
@@ -79,12 +83,14 @@ namespace Thesis.Inventory.MobileApp.ViewModel
                     Status = x.Status,
                     UomId = x.UOMId,
 
-                }).ToList();
+                }).ToObservableCollection();
             }
             else
             {
 
             }
         }
+
+      
     }
 }

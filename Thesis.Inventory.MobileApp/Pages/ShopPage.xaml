@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Thesis.Inventory.MobileApp.Pages.ShopPage"
              xmlns:view="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
-             xmlns:model="clr-namespace:Thesis.Inventory.Shared.DTOs.Product.Response;assembly=Thesis.Inventory.Shared"
+             xmlns:model="clr-namespace:Thesis.Inventory.MobileApp.Model"
              x:Name="myshopPage"
              x:DataType="view:ShopPageViewModel"
              BackgroundColor="#FAFAFA"
@@ -15,19 +15,19 @@
             <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshingCommand}">
+    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshingCommand}">
         <ScrollView>
             <VerticalStackLayout x:Name="verStack">
 
                 <SearchBar Placeholder="Search for a product"
-                           BackgroundColor="#EBE9E9"/>
-                
+                           BackgroundColor="#EBE9E9" />
+
                 <CollectionView ItemsSource="{Binding Products}"
                                 ItemsLayout="VerticalGrid, 2">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <control:ShopProduct />
-
+                        <DataTemplate >
+                            <control:ShopProduct BindingContext="{Binding  Tmpproducts}"/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

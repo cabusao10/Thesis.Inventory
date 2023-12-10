@@ -25,6 +25,65 @@ namespace Thesis.Inventory.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Thesis.Inventory.Domain.Entities.ChatMessageEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChatRoomEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateDeleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatRoomEntityId");
+
+                    b.ToTable("ChatRoomMessages");
+                });
+
+            modelBuilder.Entity("Thesis.Inventory.Domain.Entities.ChatRoomEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateDeleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatRooms");
+                });
+
             modelBuilder.Entity("Thesis.Inventory.Domain.Entities.CompanyEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -103,6 +162,8 @@ namespace Thesis.Inventory.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -228,42 +289,6 @@ namespace Thesis.Inventory.Infrastructure.Migrations
                     b.ToTable("Provinces");
                 });
 
-            modelBuilder.Entity("Thesis.Inventory.Domain.Entities.ShoppingCartEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateDeleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ShoppingCarts");
-                });
-
             modelBuilder.Entity("Thesis.Inventory.Domain.Entities.UOMEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -338,6 +363,12 @@ namespace Thesis.Inventory.Infrastructure.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
+                    b.Property<string>("MessageConnectionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OTP")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -366,6 +397,15 @@ namespace Thesis.Inventory.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Thesis.Inventory.Domain.Entities.ChatMessageEntity", b =>
+                {
+                    b.HasOne("Thesis.Inventory.Domain.Entities.ChatRoomEntity", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatRoomEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Thesis.Inventory.Domain.Entities.OrderEntity", b =>
                 {
                     b.HasOne("Thesis.Inventory.Domain.Entities.ProductEntity", "Product")
@@ -373,6 +413,14 @@ namespace Thesis.Inventory.Infrastructure.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Thesis.Inventory.Domain.Entities.UserEntity", "Customer")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
 
                     b.Navigation("Product");
                 });
@@ -396,25 +444,6 @@ namespace Thesis.Inventory.Infrastructure.Migrations
                     b.Navigation("UOM");
                 });
 
-            modelBuilder.Entity("Thesis.Inventory.Domain.Entities.ShoppingCartEntity", b =>
-                {
-                    b.HasOne("Thesis.Inventory.Domain.Entities.UserEntity", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Thesis.Inventory.Domain.Entities.ProductEntity", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Thesis.Inventory.Domain.Entities.UserEntity", b =>
                 {
                     b.HasOne("Thesis.Inventory.Domain.Entities.ProvinceEntity", "Province")
@@ -424,6 +453,11 @@ namespace Thesis.Inventory.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Province");
+                });
+
+            modelBuilder.Entity("Thesis.Inventory.Domain.Entities.ChatRoomEntity", b =>
+                {
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }
