@@ -16,6 +16,7 @@ namespace Thesis.Inventory.Shared.DTOs.Product.Requests
         public int UOMId { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }
+        public int MinimumQuantity { get; set; }
         public string? ProductImage { get; set; }
         public ProductStatusType Status { get; set; }
     }

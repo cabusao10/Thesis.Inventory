@@ -27,6 +27,7 @@ namespace Thesis.Inventory.ItemManagement.Services.Commands.Product
             private const string SuccessMessage = "Success creating new product.";
             private const string FailedMessage1 = "Failed creating new category.";
             private const string FailedMessage2 = "There is already an existing product with that Id.";
+            private const string FailedMessage3 = "Invalid Image file.";
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Handler"/> class.
@@ -51,11 +52,18 @@ namespace Thesis.Inventory.ItemManagement.Services.Commands.Product
                         return Result<GetProductResponse>.Fail(FailedMessage2);
                     }
 
+                  
                     var entity = this.Mapper.Map<ProductEntity>(request);
                     if (request.ProductImage != null && request.ProductImage != string.Empty)
                     {
                         var imagedata = request.ProductImage.Split(",");
                         var imagetype = imagedata[0];
+
+                        if(!imagetype.Contains("jpeg") && !imagetype.Contains("png") && !imagetype.Contains("jpg"))
+                        {
+                            return Result<GetProductResponse>.Fail(FailedMessage3);
+                        }
+
                         var b64 = imagedata[1];
                         var imagebytes = Convert.FromBase64String(b64);
 

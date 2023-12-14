@@ -134,7 +134,7 @@ export class Orders extends Component {
         }
         else if (column.fieldName === 'action') {
             
-            if (item.status === 1) {
+            if (item.status === 1 ||item.status === 0) {
                 return <><PrimaryButton onClick={() => this.setState({ orderId: item.id, isYesNoHidden: false, newStatus: 3 })}>Change to Packed</PrimaryButton></>
             }
             else if (item.status === 3) {

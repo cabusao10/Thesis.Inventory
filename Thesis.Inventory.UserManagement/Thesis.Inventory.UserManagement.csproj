@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Thesis.Inventory.Authentication\Thesis.Inventory.Authentication.csproj" />
+    <ProjectReference Include="..\Thesis.Inventory.Email\Thesis.Inventory.Email.csproj" />
     <ProjectReference Include="..\Thesis.Inventory.Infrastructure\Thesis.Inventory.Infrastructure.csproj" />
     <ProjectReference Include="..\Thesis.Inventory.Shared\Thesis.Inventory.Shared.csproj" />
   </ItemGroup>

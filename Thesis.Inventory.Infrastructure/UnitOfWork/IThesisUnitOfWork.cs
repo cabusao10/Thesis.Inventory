@@ -19,6 +19,8 @@ namespace Thesis.Inventory.Infrastructure.UnitOfWork
         IApplicationRepository<ProductCategoryEntity> ProductCategories {get;}
         IApplicationRepository<OrderEntity> Orders {get;}
         IApplicationRepository<ShoppingCartEntity> ShoppingCarts {get; }
+        IApplicationRepository<ChatRoomEntity> ChatRooms {get; }
+        IApplicationRepository<ChatMessageEntity> ChatRoomMessages {get; }
 
         /// <summary>
         /// Saves changes.

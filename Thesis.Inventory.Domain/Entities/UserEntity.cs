@@ -19,6 +19,8 @@ namespace Thesis.Inventory.Domain.Entities
         public GenderType Gender { get; set; }
         public UserRoleType Role { get; set; }
         public UserStatusType Status { get; set; }
+        public string? OTP { get; set; }
+        public string? MessageConnectionId { get; set; }
         public virtual ProvinceEntity Province { get; set; }
         
     }

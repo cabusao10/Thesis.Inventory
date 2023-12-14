@@ -17,8 +17,10 @@ namespace Thesis.Inventory.Shared.DTOs.Product.Response
         public int UOMId { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }
+        public int MinimumQuantity { get; set; }
         public byte[]? Image { get; set; }
         public string? ImageType { get; set; }
+        public bool IsLowStock { get; set; }
         public ProductStatusType Status { get; set; }
     }
 }

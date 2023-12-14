@@ -9,5 +9,7 @@ namespace Thesis.Inventory.MobileApp.Configurations
     public class APIConfiguration
     {
         public string BaseAddress { get; set; }
+        public string HuBConnection { get; set; }
+        public string AdminUserName { get; set; }
     }
 }

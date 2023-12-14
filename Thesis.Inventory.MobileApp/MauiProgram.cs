@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Thesis.Inventory.MobileApp.Configurations;
 using Thesis.Inventory.MobileApp.Extensions;
 using Thesis.Inventory.MobileApp.Popups;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Thesis.Inventory.MobileApp
 {
@@ -26,14 +27,16 @@ namespace Thesis.Inventory.MobileApp
             {
                 builder.Configuration.AddJsonStream(stream);
             }
-
-
-
+#if ANDROID
+Platforms.Android.DangerousAndroidMessageHandlerEmitter.Register();
+Platforms.Android.DangerousTrustProvider.Register();
+#endif
             var apiconfig = builder.Configuration.GetSection("ApiEndPoint");
             var apiconfiguration = new APIConfiguration();
             apiconfig.Bind(apiconfiguration);
             HttpClientHandler insecureHandler = GetInsecureHandler();
             builder.Services.AddViewModelLayer();
+            builder.Services.AddScoped(s => apiconfiguration);
             
             builder.Services.AddScoped(sp => new HttpClient(insecureHandler) { BaseAddress = new Uri(apiconfig["BaseAddress"]) });
 #if DEBUG

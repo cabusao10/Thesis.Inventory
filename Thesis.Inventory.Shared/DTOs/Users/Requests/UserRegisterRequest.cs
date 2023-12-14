@@ -10,6 +10,7 @@ namespace Thesis.Inventory.Shared.DTOs.Users.Requests
     public class UserRegisterRequest
     {
         public string Username { get; set; }
+        public string BusinessName { get; set; }
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public string Email { get; set; }

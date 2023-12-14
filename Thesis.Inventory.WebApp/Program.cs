@@ -3,6 +3,9 @@ using Thesis.Inventory.Authentication.Extensions;
 using Thesis.Inventory.ItemManagement.Extensions;
 using Thesis.Inventory.Infrastructure.Extensions;
 using Thesis.Inventory.UserManagement.Extensions;
+using Thesis.Inventory.Email.Extension;
+using Thesis.Inventory.Messaging.ChatService;
+using Thesis.Inventory.Messaging.Extensions;
 
 string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -20,7 +23,9 @@ var config_token = builder.Configuration.GetSection("JsonWebTokenKeys");
 builder.Services.AddInfrastructureLayer(config_sql);
 builder.Services.AddUserManagementLayer();
 builder.Services.AddProductManagementLayer();
+builder.Services.AddEmailServiceLayer();
 builder.Services.AddJWTTokenServices(config_token);
+builder.Services.AddMessageLayer();
 
 builder.Services.AddCors(x =>
 {
@@ -30,6 +35,8 @@ builder.Services.AddCors(x =>
             z.AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed(origin => true).SetPreflightMaxAge(TimeSpan.FromSeconds(2520)); ;
         });
 });
+
+builder.Services.AddSignalR();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -60,5 +67,5 @@ app.MapControllerRoute(
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
-
+app.MapHub<ChatHub>("chat-hub");
 app.Run();

@@ -24,5 +24,10 @@ namespace Thesis.Inventory.MobileApp
 
             SemanticScreenReader.Announce(CounterBtn.Text);
         }
+
+        private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            ((MainViewModel)BindingContext).IsPassword = !e.Value;
+        }
     }
 }

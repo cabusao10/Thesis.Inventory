@@ -16,10 +16,11 @@ namespace Thesis.Inventory.MobileApp.ViewModel
     public partial class AddToCartViewModel : ObservableObject
     {
         private readonly HttpClient _httpClient;
-        public AddToCartViewModel(HttpClient httpClient)
+        private readonly CartViewModel _cartViewModel;
+        public AddToCartViewModel(HttpClient httpClient , CartViewModel carvm)
         {
             this._httpClient = httpClient;
-
+            this._cartViewModel = carvm;
         }
 
 
@@ -48,6 +49,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
             };
 
             var result = await _httpClient.PostAsync<bool>("cart/add", request);
+            this._cartViewModel.GetCarts();
             return result.Succeeded;
         }
     }

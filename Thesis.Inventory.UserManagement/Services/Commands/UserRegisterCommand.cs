@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Thesis.Inventory.Authentication.Configurations;
 using Thesis.Inventory.Domain.Entities;
+using Thesis.Inventory.Email;
 using Thesis.Inventory.Infrastructure.UnitOfWork;
 using Thesis.Inventory.Shared.DTOs.Users.Requests;
 using Thesis.Inventory.Shared.DTOs.Users.Responses;
@@ -47,11 +48,13 @@ namespace Thesis.Inventory.UserManagement.Services.Commands
             /// </summary>
             /// <param name="thesisUnitOfWork">User unit of work.</param>
             /// <param name="mapper">THe mapper.</param>
-            public Handler(IThesisUnitOfWork thesisUnitOfWork, IMapper mapper, JwtSettings jwtSettings)
+            public Handler(IThesisUnitOfWork thesisUnitOfWork, IMapper mapper, JwtSettings jwtSettings, IEmailService emailservice)
                 : base(thesisUnitOfWork, mapper, jwtSettings)
             {
+                this.EmailService = emailservice;
             }
 
+            private IEmailService EmailService { get; set; }
             /// <inheritdoc/>
             public async Task<Result<Boolean>> Handle(UserRegisterCommand command, CancellationToken cancellationToken)
             {
@@ -69,13 +72,16 @@ namespace Thesis.Inventory.UserManagement.Services.Commands
                     var newuser = this.Mapper.Map<UserEntity>(request);
                     newuser.DateCreated = DateTime.Now;
 
-                    if(request.Password != request.ConfirmPassword)
+                    if (request.Password != request.ConfirmPassword)
                     {
                         return Result<Boolean>.Fail(FailedMessage2);
                     }
                     var encrpyted_password = ComputeHash(request.Password, new SHA256CryptoServiceProvider());
+                    var otp = RandomString(10);
                     newuser.Password = encrpyted_password;
-                    
+                    newuser.OTP = otp;
+                    EmailService.SendEmail(newuser.Email, $"Your verification code is <b>{otp}</b>");
+
                     await this.ThesisUnitOfWork.Users.AddAsync(newuser);
                     await this.ThesisUnitOfWork.Save();
                     return Result<Boolean>.Success(true, SuccessMessage);
@@ -85,13 +91,21 @@ namespace Thesis.Inventory.UserManagement.Services.Commands
                     return Result<Boolean>.Fail(ex.Message);
                 }
             }
+            private static Random random = new Random();
+
+            public string RandomString(int length)
+            {
+                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                return new string(Enumerable.Repeat(chars, length)
+                    .Select(s => s[random.Next(s.Length)]).ToArray());
+            }
             public string ComputeHash(string input, HashAlgorithm algorithm)
             {
                 Byte[] inputBytes = Encoding.UTF8.GetBytes(input);
 
                 Byte[] hashedBytes = algorithm.ComputeHash(inputBytes);
 
-                return BitConverter.ToString(hashedBytes).Replace("-","");
+                return BitConverter.ToString(hashedBytes).Replace("-", "");
             }
         }
 

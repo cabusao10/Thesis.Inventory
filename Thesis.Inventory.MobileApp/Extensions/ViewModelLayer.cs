@@ -25,6 +25,9 @@ namespace Thesis.Inventory.MobileApp.Extensions
             services.AddTransient<AddToCartViewModel>();
             services.AddTransient<ProfileViewModel>();
             services.AddTransient<UserOrderModel>();
+            services.AddTransient<VerifyViewModel>();
+            services.AddTransient<ChatViewModel>();
+            services.AddTransient<SettingsViewModel>();
 
             services.AddSingleton<ShopPage>();
             services.AddSingleton<MainPage>();
@@ -33,8 +36,12 @@ namespace Thesis.Inventory.MobileApp.Extensions
             services.AddSingleton<ProfilePage>();
             services.AddSingleton<RegisterPage>();
             services.AddSingleton<HomePage>();
-
+            services.AddSingleton<VerifyUser>();
+            services.AddSingleton<SettingsPage>();
+            services.AddSingleton<ChatPage>();
+            
             services.AddTransientPopup<AddToCartPopUp, AddToCartViewModel>();
+            services.AddTransientPopup<CheckOutPopUp, CheckOutViewModel>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
     }

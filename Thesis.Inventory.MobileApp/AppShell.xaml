@@ -12,10 +12,9 @@
         <Tab 
              
              x:Name="loginTab"
-             CurrentItem="{x:Reference mainpage}"
              Icon="icon_profile.png">
 
-            <ShellContent x:Name="mainpage"
+            <ShellContent Route="mainpage?isSucess=True"
                           Shell.TabBarIsVisible="false"
                           ContentTemplate="{DataTemplate local:MainPage}" />
 
@@ -27,15 +26,18 @@
         </Tab>
         <Tab 
              Icon="icon_cart.png">
-            <ShellContent Route="shop"
+            <ShellContent Route="cart"
                           ContentTemplate="{DataTemplate views:CartPage}" />
         </Tab>
         <Tab 
-             Icon="icon_setting.png">
+             Icon="msg.png">
             <ShellContent Route="settings"
-                          ContentTemplate="{DataTemplate views:RegisterPage}" />
+                          ContentTemplate="{DataTemplate views:ChatPage}" />
         </Tab>
-
+        <Tab Icon="icon_setting.png">
+            <ShellContent Route="settings"
+                          ContentTemplate="{DataTemplate views:SettingsPage}" />
+        </Tab>
     </TabBar>
 
 </Shell>

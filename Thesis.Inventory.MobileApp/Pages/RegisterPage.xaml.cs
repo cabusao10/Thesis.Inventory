@@ -11,7 +11,8 @@ public partial class RegisterPage : ContentPage
     public RegisterPage(RegisterViewModel viewModel)
 	{
 		InitializeComponent();
-        Shell.SetNavBarIsVisible(this, false);
+        Shell.SetTabBarIsVisible(this, false);
+
         BindingContext = viewModel;
     }
 }

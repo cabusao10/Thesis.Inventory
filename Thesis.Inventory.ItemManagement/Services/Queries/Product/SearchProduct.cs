@@ -46,7 +46,7 @@ namespace Thesis.Inventory.ItemManagement.Services.Queries.Product
             public async Task<Result<BasePageReponse<GetProductResponse>>> Handle(SearchProduct query, CancellationToken cancellationToken)
             {
                 var products = await this.ThesisUnitOfWork.Products.GetAllAsync();
-                var filtered = products.Where(x => x.ProductName.ToLower().Contains(query.Search) || x.ProductId == query.Search)
+                var filtered = products.Where(x => x.ProductName.ToLower().Contains(query.Search) || x.ProductId == query.Search).Where(x=> x.Quantity > 0)
                     .Skip((query.Page - 1) * query.Count)
                     .Take(query.Count)
                     .ToList();

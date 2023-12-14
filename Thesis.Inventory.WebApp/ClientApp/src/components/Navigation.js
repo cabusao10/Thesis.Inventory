@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import { initializeIcons } from '@fluentui/react/lib/Icons';
 import { createTheme, loadTheme } from '@fluentui/react';
 import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 
 const myTheme = createTheme({
     palette: {
@@ -59,20 +60,6 @@ const navLinkGroups: INavLinkGroup[] = [
                 target: '_blank',
             },
             {
-                name: 'Reports',
-
-                icon: 'ReportDocument',
-                key: 'key4',
-                target: '_blank',
-            },
-            {
-                name: 'Sales',
-
-                icon: 'PaymentCard',
-                key: 'key5',
-                target: '_blank',
-            },
-            {
                 name: 'Archive',
                 link: '/archives',
                 icon: 'Archive',
@@ -80,17 +67,17 @@ const navLinkGroups: INavLinkGroup[] = [
                 target: '_blank',
             },
             {
-                name: 'Users',
+                name: 'User Management',
                 link: '/users',
                 icon: 'FabricUserFolder',
                 key: 'key7',
                 target: '_blank',
             },
             {
-                name: 'Settings',
-
-                icon: 'Settings',
-                key: 'key8',
+                name: 'Messages',
+                link: '/chat',
+                icon: 'Chat',
+                key: 'key10',
                 target: '_blank',
             },
             {
@@ -120,9 +107,32 @@ const navStyles: Partial<INavStyles> = {
 
 export class Navigation extends Component {
 
+    componentDidMount(){
+        this.validateSession();
+    }
     constructor(props) {
         super(props);
         this.state = { selectedKey: props.selectedNav }
+    }
+    options = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    }
+    validateSession= async ()=>{
+        await axios.post(process.env.REACT_APP_API_URL + `User/Validate`,'',  this.options)
+        .then(res => {
+            var response = res.data;
+            if (response) {
+              
+            }
+            else {
+                window.location.href = '/';
+            }
+        })
+        .catch(err=> 
+            window.location.href = '/')
     }
 
     handleNavClick = (e, item) => {

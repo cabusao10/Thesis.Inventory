@@ -68,11 +68,20 @@ export class Register extends Component {
             password: '',
             confirmPassword: '',
             gender: 0,
-            birthdate: ''
+            birthdate: '',
+            maxDate: new Date(),
         }
         this.fetchProvince();
+        this.setMaxDate();
     }
 
+    setMaxDate() {
+        var curdata = new Date();
+        curdata.setFullYear(curdata.getFullYear() - 18);
+
+        this.setState({ maxDate: curdata });
+        
+    }
     handleRegister = e => {
         e.preventDefault();
 
@@ -87,15 +96,18 @@ export class Register extends Component {
             zipCode: this.state.zipCode,
             provinceId: parseInt(this.state.province),
             gender: parseInt(this.state.gender),
-            birthdate: this.state.birthdate
+            birthdate: this.state.birthdate,
+            businessName: this.state.businessName,
+            role: 3,
+
         }
         console.log(registerRequest)
         axios.post(process.env.REACT_APP_API_URL + "User/Register", registerRequest)
             .then(res => {
                 var response = res.data;
                 if (response.succeeded) {
-
-                    window.location.href = '/login';
+                    alert("Success registering an account.")
+                    window.location.href = '/validate';
                 }
                 else {
                     alert(response.message);
@@ -125,6 +137,7 @@ export class Register extends Component {
                             </div>
                             <div class="input-box">
                                 <DatePicker label='Birthdate' required placeholder='Enter your birthdate'
+                                    maxDate={this.state.maxDate}
                                     onSelectDate={e => { this.setState({ birthdate: e }) }} />
 
                             </div>

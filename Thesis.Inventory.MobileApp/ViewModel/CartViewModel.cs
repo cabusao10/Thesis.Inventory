@@ -1,18 +1,23 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Thesis.Inventory.MobileApp.Extensions;
 using Thesis.Inventory.MobileApp.Model;
 using Thesis.Inventory.Shared.DTOs.Cart;
+using Thesis.Inventory.Shared.Enums;
 using Thesis.Inventory.Shared.Models;
 
 namespace Thesis.Inventory.MobileApp.ViewModel
 {
+    [QueryProperty(nameof(IsSuccessPayment), "isSuccessPayment")]
     public partial class CartViewModel : ObservableObject
     {
         public CartViewModel()
@@ -20,14 +25,17 @@ namespace Thesis.Inventory.MobileApp.ViewModel
 
         }
         private readonly HttpClient _httpClient;
-        public CartViewModel(HttpClient httpClient)
+        private readonly IPopupService _popupService;
+        public CartViewModel(HttpClient httpClient, IPopupService popupService)
         {
             this._httpClient = httpClient;
+            this._popupService = popupService;
             GetCarts();
         }
-
         [ObservableProperty]
-        List<CartItemModel> carts;
+        bool isSuccessPayment;
+        [ObservableProperty]
+        ObservableCollection<CartItemModel> carts;
 
         [ObservableProperty]
         bool thereIsSelected;
@@ -56,24 +64,62 @@ namespace Thesis.Inventory.MobileApp.ViewModel
             var selected = this.Carts.Where(x => x.IsSelected);
             if (selected.Any())
             {
-                var request = new CheckoutRequest
-                {
-                    CartIds = selected.Select(x => x.Id).ToArray(),
-                    PaymentType = Shared.Enums.PaymentType.Paypal,
-                };
-                var response = await _httpClient.PostAsync<bool>("Cart/Checkout",request);
 
-                if (response.Succeeded)
+                var checkoutmodel = new CheckOutViewModel(_httpClient)
                 {
-                    GetCarts();
-                    Toast.Make(response.Message);
-                }
-                else
+                    TotalPrice = selected.Sum(x => x.Quantity * x.Product.Price),
+                    CartId = selected.Select(x => x.Id).ToArray(),
+                    PaymentType = "Cash on Delivery",
+                };
+
+                this._popupService.ShowPopup<CheckOutViewModel>(onPresenting: vm =>
                 {
-                    Toast.Make(response.Message);
-                }
+                    vm.TotalPrice = selected.Sum(x => x.Quantity * x.Product.Price);
+                    vm.CartId = selected.Select(x => x.Id).ToArray();
+                    vm.PaymentType = "Cash on Delivery";
+                    vm.CheckedOut += Vm_CheckedOut;
+                });
+
+                await Task.CompletedTask;
+                //var request = new CheckoutRequest
+                //{
+                //    CartIds = selected.Select(x => x.Id).ToArray(),
+                //    PaymentType = Shared.Enums.PaymentType.Paypal,
+                //};
+                //var response = await _httpClient.PostAsync<bool>("Cart/Checkout",request);
+
+                //if (response.Succeeded)
+                //{
+                //    GetCarts();
+                //    Toast.Make(response.Message);
+                //}
+                //else
+                //{
+                //    Toast.Make(response.Message);
+                //}
             }
         }
+
+        private void Vm_CheckedOut(int[] cartIds)
+        {
+            var tmpcarts = this.Carts.ToList();
+            tmpcarts.RemoveAll(x => cartIds.Contains(x.Id));
+
+            this.Carts = tmpcarts.ToObservableCollection();
+            if (this.Carts.Count == 0)
+            {
+                this.IsEmptyVisible = true;
+                this.ThereIsSelected = false;
+                this.IsCartItemVisible = false;
+            }
+            else
+            {
+                this.IsEmptyVisible = false;
+                this.ThereIsSelected = true;
+                this.IsCartItemVisible = true;
+            }
+        }
+
         public async void GetCarts()
         {
             var response = await _httpClient.GetAsync<List<CartModel>>("Cart/GetCart");
@@ -96,7 +142,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
                         UOMId = x.Product.UOMId,
                     },
                     Quantity = x.Quantity,
-                }).ToList();
+                }).ToObservableCollection();
 
                 if (this.Carts.Count == 0)
                 {

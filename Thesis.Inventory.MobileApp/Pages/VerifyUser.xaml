@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
+             x:DataType="views:VerifyViewModel"
+             x:Class="Thesis.Inventory.MobileApp.Pages.VerifyUser"
+             Title="VerifyUser">
+    <Grid>
+        <VerticalStackLayout VerticalOptions="Center"
+                             Spacing="10"
+                             Padding="10,0,10,0">
+            <Label Text="You need to verify your account, check your email for the verification code"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center" />
+            <Entry Placeholder="Verification Code"
+                   Text="{Binding VerifcationCode}" />
+            
+            <Button Text="Verify"
+                    Command="{Binding VerifyUserCommand}" />
+            
+            <Button BackgroundColor="White"
+                    TextColor="Black"
+                    Text="Resend verification code." />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

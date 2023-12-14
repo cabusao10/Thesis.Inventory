@@ -4,7 +4,11 @@ namespace Thesis.Inventory.MobileApp.Pages;
 
 public partial class CartPage : ContentPage
 {
-	public CartPage(CartViewModel viewModel)
+    public CartPage()
+    {
+        InitializeComponent();
+    }
+    public CartPage(CartViewModel viewModel)
 	{
         this.BindingContext = viewModel;
         InitializeComponent();

@@ -27,7 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thesis.Inventory.Authentica
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thesis.Inventory.ItemManagement", "Thesis.Inventory.ItemManagement\Thesis.Inventory.ItemManagement.csproj", "{4D119391-9523-41DD-B7DD-F06A35D9409D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thesis.Inventory.MobileApp", "Thesis.Inventory.MobileApp\Thesis.Inventory.MobileApp.csproj", "{9FCFA025-6D1A-476B-AA1E-6AB675B8E770}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thesis.Inventory.MobileApp", "Thesis.Inventory.MobileApp\Thesis.Inventory.MobileApp.csproj", "{9FCFA025-6D1A-476B-AA1E-6AB675B8E770}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thesis.Inventory.Email", "Thesis.Inventory.Email\Thesis.Inventory.Email.csproj", "{9C2CE845-3DAE-414B-8094-E14EEA8669FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thesis.Inventory.Messaging", "Thesis.Inventory.Messaging\Thesis.Inventory.Messaging.csproj", "{BED010F8-395B-4431-8C43-DD14302BF860}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +73,14 @@ Global
 		{9FCFA025-6D1A-476B-AA1E-6AB675B8E770}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FCFA025-6D1A-476B-AA1E-6AB675B8E770}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9FCFA025-6D1A-476B-AA1E-6AB675B8E770}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9C2CE845-3DAE-414B-8094-E14EEA8669FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2CE845-3DAE-414B-8094-E14EEA8669FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2CE845-3DAE-414B-8094-E14EEA8669FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2CE845-3DAE-414B-8094-E14EEA8669FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BED010F8-395B-4431-8C43-DD14302BF860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED010F8-395B-4431-8C43-DD14302BF860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED010F8-395B-4431-8C43-DD14302BF860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED010F8-395B-4431-8C43-DD14302BF860}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +94,8 @@ Global
 		{7244F336-9F50-427B-8D65-E4A11178E45B} = {4E062929-BAA9-4AD3-80A2-4E678E67084A}
 		{4D119391-9523-41DD-B7DD-F06A35D9409D} = {E7766357-6E7A-470E-84AA-A7F33913D3C8}
 		{9FCFA025-6D1A-476B-AA1E-6AB675B8E770} = {37C1B0F4-9B9C-4648-9DE3-8DEA90E7F182}
+		{9C2CE845-3DAE-414B-8094-E14EEA8669FC} = {4E062929-BAA9-4AD3-80A2-4E678E67084A}
+		{BED010F8-395B-4431-8C43-DD14302BF860} = {4E062929-BAA9-4AD3-80A2-4E678E67084A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F108480E-2151-4B86-9975-88C7EFB41F68}

@@ -43,7 +43,7 @@ namespace Thesis.Inventory.MobileApp.Model
             if(response.Succeeded)
             {
                 this.Status = OrderStatusType.Cancelled;
-                this.Quantity = 2;
+                
             }
             else
             {

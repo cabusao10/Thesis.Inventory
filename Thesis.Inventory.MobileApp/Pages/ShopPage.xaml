@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Thesis.Inventory.MobileApp.Pages.ShopPage"
              xmlns:view="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
-             xmlns:model="clr-namespace:Thesis.Inventory.Shared.DTOs.Product.Response;assembly=Thesis.Inventory.Shared"
+             xmlns:model="clr-namespace:Thesis.Inventory.MobileApp.Model"
              x:Name="myshopPage"
              x:DataType="view:ShopPageViewModel"
              BackgroundColor="#FAFAFA"
@@ -15,23 +15,100 @@
             <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshingCommand}">
+    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshingCommand}">
         <ScrollView>
             <VerticalStackLayout x:Name="verStack">
 
                 <SearchBar Placeholder="Search for a product"
-                           BackgroundColor="#EBE9E9"/>
-                
-                <CollectionView ItemsSource="{Binding Products}"
+                           BackgroundColor="#EBE9E9" />
+
+                <!--<CollectionView ItemsSource="{Binding Products}"
                                 ItemsLayout="VerticalGrid, 2">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <control:ShopProduct />
-
+                        <DataTemplate >
+                            <control:ShopProduct BindingContext="{Binding  Tmpproducts}"/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-                </CollectionView>
+                </CollectionView>-->
+                <FlexLayout BindableLayout.ItemsSource="{Binding Products}"
+                            Direction="Row"
+                            AlignItems="Start"
+                            AlignContent="Start"
+                            Wrap="Wrap" >
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="view:ShopProductViewModel">
+                            <VerticalStackLayout>
 
+                                <Frame Padding="-5,0,-5,5"
+                                       BackgroundColor="White"
+                                       Margin="5,10,5,0">
+
+                                    <Grid  RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="150" />
+                                            <RowDefinition Height="110" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid  WidthRequest="{Binding CardSize}"
+                                               MaximumWidthRequest="{Binding CardSize}"
+                                              Margin="10,0,10,0">
+                                            <ImageButton HeightRequest="120"
+                                                         MaximumHeightRequest="120"
+                                                         WidthRequest="120"
+                                                         MaximumWidthRequest="120"
+                                                         CornerRadius="10"
+                                                         Margin="18"
+                                                         Source="{Binding Image}" />
+
+                                        </Grid>
+                                        <Grid Grid.Row="1"
+                                              WidthRequest="{Binding CardSize}"
+                                              MaximumWidthRequest="{Binding CardSize}"
+                                              Margin="10,0,10,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="6*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid>
+
+                                                <VerticalStackLayout Grid.Column="0">
+                                                    <Label Text="{Binding ProductName}"
+                                                           FontAttributes="Bold"
+                                                           TextColor="#72767D"
+                                                           FontSize="Subtitle" />
+                                                    <HorizontalStackLayout Grid.Row="1">
+                                                        <Label Text="₱ "
+                                                               FontAttributes="Bold"
+                                                               TextColor="#FD5853"
+                                                               FontSize="Subtitle" />
+
+                                                        <Label Text="{Binding Price}"
+                                                               FontAttributes="Bold"
+                                                               TextColor="#FD5853"
+                                                               FontSize="Title" />
+                                                    </HorizontalStackLayout>
+                                                </VerticalStackLayout>
+
+                                            </Grid>
+                                            <Grid  Grid.Row="1">
+                                                <ImageButton BackgroundColor="#F1F1F2"
+                                                             HeightRequest="65"
+                                                             Padding="8"
+                                                             CornerRadius="5"
+                                                             BorderColor="Black"
+                                                             Command="{Binding AddToCartCommand}"
+                                                             Source="add_to_cart.png" />
+                                            </Grid>
+                                        </Grid>
+
+                                    </Grid>
+                                </Frame>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
             </VerticalStackLayout>
         </ScrollView>
     </RefreshView>

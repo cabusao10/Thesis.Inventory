@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Thesis.Inventory.MobileApp.Pages.SettingsPage"
+             Shell.NavBarIsVisible="False"
+             xmlns:views="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
+             x:DataType="views:SettingsViewModel"
+             Title="SettingsPage">
+    <Grid Padding="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+        <VerticalStackLayout>
+            <Label Text="Settings"
+                   BackgroundColor="#F2F0F4" HeightRequest="45" TextColor="Black" FontSize="Large"/>
+            <Label Text="Fullname"/>
+            <Entry Placeholder="Fullname" Text="{Binding Profile.Fullname}"/>
+            <Label Text="Address" />
+            <Entry Placeholder="Address"
+                   Text="{Binding Profile.Address}" />
+            <Button Text="Update" WidthRequest="150" Command="{Binding UpdateCommand}"/>
+        </VerticalStackLayout>
+        <Button Grid.Row="1" Text="Signout" HeightRequest="50" Clicked="Button_Clicked"/>
+    </Grid>
+</ContentPage>
