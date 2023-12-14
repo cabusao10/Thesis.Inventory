@@ -22,6 +22,7 @@ namespace Thesis.Inventory.UserManagement.Mappings
 
             this.CreateMap<UserEntity, UserLoginResponse>().ReverseMap();
             this.CreateMap<UserEntity, GetUserResponse>().ReverseMap();
+            this.CreateMap<UserEntity, UpdateUserRequest>().ReverseMap();
             this.CreateMap<UserRegisterRequest, UserEntity>().ReverseMap();
             this.CreateMap<ChatMessageEntity, ChatRoomMessageModel>().ReverseMap();
 

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Thesis.Inventory.Authentication.Configurations;
 using Thesis.Inventory.Infrastructure.UnitOfWork;
 using Thesis.Inventory.Shared.DTOs.Product.Requests;
+using Thesis.Inventory.Shared.DTOs.Product.Response;
 
 namespace Thesis.Inventory.ItemManagement.Services.Commands.Product
 {
@@ -26,6 +27,7 @@ namespace Thesis.Inventory.ItemManagement.Services.Commands.Product
         {
             private const string SuccessMessage = "Success updating product!";
             private const string FailedMessage1 = "Product not found.";
+            private const string FailedMessage3 = "Invalid Image File.";
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Handler"/> class.
@@ -58,11 +60,19 @@ namespace Thesis.Inventory.ItemManagement.Services.Commands.Product
                     product.ProductId = request.ProductId;
                     product.ProductName = request.ProductName;
                     product.DateModified = DateTime.Now;
+                    product.MinimumQuantity = request.MinimumQuantity;
 
                     if (request.ProductImage != null && request.ProductImage != string.Empty)
                     {
                         var imagedata = request.ProductImage.Split(",");
+
+                      
                         var imagetype = imagedata[0];
+                        if (!imagetype.Contains("jpeg") && !imagetype.Contains("png") && !imagetype.Contains("jpg"))
+                        {
+                            return Result<bool>.Fail(FailedMessage3);
+                        }
+
                         var b64 = imagedata[1];
                         var imagebytes = Convert.FromBase64String(b64);
 

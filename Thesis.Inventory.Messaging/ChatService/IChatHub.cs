@@ -9,6 +9,7 @@ namespace Thesis.Inventory.Messaging.ChatHChatServiceub
 {
     public interface IChatHub
     {
+        Task SendMessageToAdmin(string message);
         Task SendMessage(string sessionid,string message);
         Task ReceiveMessage(string message);
     }

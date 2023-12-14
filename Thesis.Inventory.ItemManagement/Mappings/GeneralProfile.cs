@@ -30,6 +30,9 @@ namespace Thesis.Inventory.ItemManagement.Mappings
             this.CreateMap<GetAllOrdersResponse, OrderEntity>().ReverseMap();
             this.CreateMap<OrderModel[], OrderEntity[]>().ReverseMap();
             this.CreateMap<UserModel, UserEntity>().ReverseMap();
+            this.CreateMap<ProductEntity, GetLowStockResponse>().ReverseMap();
+            this.CreateMap<AddUomRequest, UOMEntity>().ReverseMap();
+
 
             this.CreateMap<UOMEntity, GetUomResponse>().ReverseMap();
 

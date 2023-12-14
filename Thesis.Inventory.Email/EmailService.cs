@@ -18,7 +18,7 @@ namespace Thesis.Inventory.Email
         }
         public bool SendEmail(string receiver_email, string body)
         {
-            var sender = new MailAddress("cabusaorhen14@gmail.com", "Admin");
+            var sender = new MailAddress("trackinsales0@gmail.com", "Admin");
             var receiver = new MailAddress(receiver_email, "User");
             var smtp = new SmtpClient
             {
@@ -27,7 +27,7 @@ namespace Thesis.Inventory.Email
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(sender.Address, "ijlo rarm hfot lvzz"),
+                Credentials = new NetworkCredential(sender.Address, "smxv uvtp tmpp tnle"),
             };
 
             using (var message = new MailMessage(sender, receiver)

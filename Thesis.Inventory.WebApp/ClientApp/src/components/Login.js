@@ -66,14 +66,19 @@ export class Login extends Component {
                     localStorage.setItem("username", data.username);
                     localStorage.setItem("email", data.email);
                     localStorage.setItem("id", data.id);
-                    window.location.href = '/dashboard';
+                    localStorage.setItem("businessname", data.businessName);
+                    localStorage.setItem("_66Dsd87fhH", data.role);
 
-                    const options = {
-                        'Content-type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    
+                    if(data.status == 1){
+                        window.location.href = '/dashboard';
                     }
-            
-                    axios.defaults.headers.common = options;
+                    else{
+                        window.location.href = '/validate';
+                    }
+
+                 
+                
             
                 }
                 else {

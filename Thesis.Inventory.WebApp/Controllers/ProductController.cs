@@ -66,6 +66,13 @@ namespace Thesis.Inventory.WebApp.Controllers
             var result = await this._mediator.Send(new GetProductCategory());
             return this.Ok(result);
         }
+        [HttpPost]
+        [Route("AddUom")]
+        public async Task<IActionResult> AddUom(AddUomRequest request)
+        {
+            var result = await this._mediator.Send(new AddUOM(request));
+            return this.Ok(result);
+        }
 
         [HttpGet]
         [Route("GetUom")]
@@ -80,6 +87,14 @@ namespace Thesis.Inventory.WebApp.Controllers
         public async Task<IActionResult> AddProduct(AddProductRequest request)
         {
             var result = await this._mediator.Send(new AddProduct(request));
+            return this.Ok(result);
+        }
+
+        [HttpPost]
+        [Route("AddCategory")]
+        public async Task<IActionResult> AddCategory(AddProductCategoryRequest request)
+        {
+            var result = await this._mediator.Send(new AddProductCategory(request));
             return this.Ok(result);
         }
 

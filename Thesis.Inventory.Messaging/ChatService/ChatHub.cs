@@ -58,7 +58,7 @@ namespace Thesis.Inventory.Messaging.ChatService
                 senderConenctionID = sender.MessageConnectionId;
             }
             
-            var roomName = $"{String.Join("-", new[] { sender.Id, receiver.Id }.OrderBy(x => x).ToArray())}";
+            var roomName = $"{targetUser}";
             await Groups.AddToGroupAsync(receiver.MessageConnectionId, roomName);
             await Groups.AddToGroupAsync(sender.MessageConnectionId, roomName);
 
@@ -117,5 +117,63 @@ namespace Thesis.Inventory.Messaging.ChatService
             await Task.CompletedTask;
         }
 
+        public async Task SendMessageToAdmin(string message)
+        {
+            var val = GetName();
+            var connectionId = "";
+
+            var admins = await this._unitOfWork.Users.Entities.Where(x=> x.Role!= Shared.Enums.UserRoleType.Consumer).ToListAsync();
+
+            var senderConenctionID = "";
+            var sender = await this._unitOfWork.Users.Entities.Where(x => x.Username == val).FirstOrDefaultAsync();
+
+            if (sender != null)
+            {
+                senderConenctionID = sender.MessageConnectionId;
+            }
+            var roomName = $"{sender.Username}";
+
+            admins.ForEach(async x => await Groups.AddToGroupAsync(x.MessageConnectionId??"", roomName));
+            
+            await Groups.AddToGroupAsync(sender.MessageConnectionId, roomName);
+
+            // add chat room in db
+            var isAny = await this._unitOfWork.ChatRooms.Entities.AnyAsync(x => x.Name == roomName);
+            if (!isAny)
+            {
+                var newroom = new ChatRoomEntity
+                {
+                    DateCreated = DateTime.Now,
+                    Name = roomName,
+                };
+                await this._unitOfWork.ChatRooms.AddAsync(newroom);
+
+                await this._unitOfWork.Save();
+
+
+                var newmessage = new ChatMessageEntity
+                {
+                    ChatRoomEntityId = newroom.Id,
+                    DateCreated = DateTime.Now,
+                    Message = message
+                };
+                await this._unitOfWork.ChatRoomMessages.AddAsync(newmessage);
+                await this._unitOfWork.Save();
+            }
+            else
+            {
+                var chatroom = await _unitOfWork.ChatRooms.Entities.Where(x => x.Name == roomName).FirstAsync();
+
+                var newmessage = new ChatMessageEntity
+                {
+                    ChatRoomEntityId = chatroom.Id,
+                    DateCreated = DateTime.Now,
+                    Message = message
+                };
+                await this._unitOfWork.ChatRoomMessages.AddAsync(newmessage);
+                await this._unitOfWork.Save();
+            }
+            await Clients.Groups(roomName).SendAsync("ReceiveMessage", val, message);
+        }
     }
 }

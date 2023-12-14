@@ -24,6 +24,8 @@ namespace Thesis.Inventory.Domain.Entities
 
         [Column("Quantity", TypeName = "int")]
         public int Quantity { get; set; }
+        [Column("MinimumQuantity", TypeName = "int")]
+        public int MinimumQuantity { get; set; }
 
         [Column("Status", TypeName = "int")]
         public ProductStatusType Status { get; set; }

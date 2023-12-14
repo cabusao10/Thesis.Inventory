@@ -227,6 +227,10 @@ namespace Thesis.Inventory.Infrastructure.Migrations
                     b.Property<string>("ImageType")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MinimumQuantity")
+                        .HasColumnType("int")
+                        .HasColumnName("MinimumQuantity");
+
                     b.Property<double>("Price")
                         .HasColumnType("float")
                         .HasColumnName("Price");
@@ -287,6 +291,42 @@ namespace Thesis.Inventory.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Provinces");
+                });
+
+            modelBuilder.Entity("Thesis.Inventory.Domain.Entities.ShoppingCartEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateDeleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Thesis.Inventory.Domain.Entities.UOMEntity", b =>
@@ -442,6 +482,25 @@ namespace Thesis.Inventory.Infrastructure.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("UOM");
+                });
+
+            modelBuilder.Entity("Thesis.Inventory.Domain.Entities.ShoppingCartEntity", b =>
+                {
+                    b.HasOne("Thesis.Inventory.Domain.Entities.UserEntity", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Thesis.Inventory.Domain.Entities.ProductEntity", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Thesis.Inventory.Domain.Entities.UserEntity", b =>

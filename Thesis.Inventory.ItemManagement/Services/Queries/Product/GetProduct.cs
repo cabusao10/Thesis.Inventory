@@ -45,8 +45,15 @@ namespace Thesis.Inventory.ItemManagement.Services.Queries.Product
             public async Task<Result<BasePageReponse<GetProductResponse>>> Handle(GetProduct query, CancellationToken cancellationToken)
             {
                 var products = this.ThesisUnitOfWork.Products.Entities
-                    .Where(x => x.Status != Shared.Enums.ProductStatusType.Archived && x.Status != Shared.Enums.ProductStatusType.Deleted).GetPaged(query.Page, 100).ToList();
+                    .Where(x => x.Status != Shared.Enums.ProductStatusType.Archived && x.Status != Shared.Enums.ProductStatusType.Deleted)
+                    .Where(x => x.Quantity > 0).GetPaged(query.Page, 100).ToList();
                 var res_products = this.Mapper.Map<GetProductResponse[]>(products);
+
+                for(int x = 0; x< res_products.Length; x++)
+                {
+                    res_products[x].IsLowStock = res_products[x].Quantity < res_products[x].MinimumQuantity;
+                }
+
                 var all_count = await this.ThesisUnitOfWork.Products.Count();
                 var pagecount = (all_count / query.Count) + (all_count % query.Count) > 0 ? 1 : 0;
 

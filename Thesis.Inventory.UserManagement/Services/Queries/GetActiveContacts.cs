@@ -56,12 +56,9 @@ namespace Thesis.Inventory.UserManagement.Services.Queries
                 }
 
 
-                var chatroom_members_id = chatrooms.Select(x => x.Name.Split("-")).SelectMany(x => x)
-                    .Select(x => Convert.ToInt32(x))
-                    .Where(x => x != admin.Id)
-                    .ToArray();
+                var chatroom_names = chatrooms.Select(x => x.Name).ToArray();
 
-                var chatroom_members_info = this.ThesisUnitOfWork.Users.Entities.Where(x => chatroom_members_id.Contains(x.Id)).ToArray();
+                var chatroom_members_info = this.ThesisUnitOfWork.Users.Entities.Where(x => chatroom_names.Contains(x.Username)).ToArray();
 
                 var result = chatroom_members_info.Select(x => new GetActiveContactsResponse
                 {

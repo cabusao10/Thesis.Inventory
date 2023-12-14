@@ -19,6 +19,7 @@ namespace Thesis.Inventory.Infrastructure.Context
         DbSet<OrderEntity> Orders { get; set; }
         DbSet<ChatRoomEntity> ChatRooms { get; set; }
         DbSet<ChatMessageEntity> ChatRoomMessages { get; set; }
+        DbSet<ShoppingCartEntity> ShoppingCarts { get; set; }
         Task<int> SaveChanges();
         DbSet<TEntity> Set<TEntity>()
             where TEntity : class;

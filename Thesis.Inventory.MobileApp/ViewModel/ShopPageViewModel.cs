@@ -38,6 +38,8 @@ namespace Thesis.Inventory.MobileApp.ViewModel
         [ObservableProperty]
         bool isRefreshing;
 
+      
+
         [RelayCommand]
         async Task Refreshing()
         {
@@ -75,7 +77,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
                 {
                     CategoryId = x.CategoryId,
                     Id = x.Id,
-                  
+                    Image = ImageSource.FromStream(() => new MemoryStream(x.Image)),
                     Price = x.Price,
                     ProductId = x.ProductId,
                     ProductName = x.ProductName,
@@ -91,6 +93,6 @@ namespace Thesis.Inventory.MobileApp.ViewModel
             }
         }
 
-      
+
     }
 }

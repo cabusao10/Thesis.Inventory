@@ -64,6 +64,8 @@ namespace Thesis.Inventory.UserManagement.Services.Commands
                         return Result<bool>.Fail(FailedMessage);
                     }
                     user.Status = Shared.Enums.UserStatusType.Verified;
+
+                    await this.ThesisUnitOfWork.Users.UpdateAsync(user);
                     await this.ThesisUnitOfWork.Save();
 
                     return Result<bool>.Success(true, SuccessMessage);

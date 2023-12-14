@@ -1,12 +1,13 @@
 import { Component, useState } from "react";
 import { Navigation } from "./Navigation";
 import { PageHeader } from "./PageHeader";
-import { ComboBox, DefaultButton, DetailsList, DetailsListLayoutMode, FontWeights, IconButton, Image, Label, Modal, PrimaryButton, SearchBox, SelectionMode, TextField, createTheme, getTheme, loadTheme, mergeStyles } from "@fluentui/react";
+import { ComboBox, DefaultButton, DetailsList, DetailsListLayoutMode, FontIcon, FontWeights, IconButton, Image, Label, Modal, PrimaryButton, SearchBox, SelectionMode, TextField, TooltipHost, createTheme, getTheme, loadTheme, mergeStyles } from "@fluentui/react";
 import { Pagination } from "./Pagination";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import YesNo from "./YesOrNoModal";
+import { useReactToPrint } from 'react-to-print';
 
 const myTheme = createTheme({
     palette: {
@@ -40,6 +41,8 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 export class Inventory extends Component {
+
+
     constructor(props) {
 
 
@@ -56,6 +59,7 @@ export class Inventory extends Component {
             category: 0,
             UOM: 0,
             quantity: 0,
+            minimumQuantity: 0,
             uomlist: [],
             isYesNoHidden: true,
             archivedId: 0,
@@ -68,7 +72,7 @@ export class Inventory extends Component {
         this.getAllItems();
         this.getAllCategorys();
         this.getAllUOM();
-       
+
     }
     options = {
         headers: {
@@ -76,6 +80,7 @@ export class Inventory extends Component {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         }
     }
+
 
     async getAllUOM() {
         await axios.get(process.env.REACT_APP_API_URL + `Product/GetUom`, this.options)
@@ -98,6 +103,7 @@ export class Inventory extends Component {
                 }
             });
     }
+
     handleAddNewProduct = async () => {
         const request = {
             productName: this.state.productName,
@@ -107,6 +113,7 @@ export class Inventory extends Component {
             quantity: this.state.quantity,
             price: this.state.price,
             productImage: this.state.selectedFile,
+            minimumQuantity: this.state.minimumQuantity
         }
 
         console.log(request);
@@ -118,7 +125,7 @@ export class Inventory extends Component {
                     this.setState({ isModalOpen: false })
                 }
                 else {
-                    console.log(response.message);
+                    alert(response.message);
                 }
             })
     }
@@ -139,6 +146,7 @@ export class Inventory extends Component {
                         imageData: product.image,
                         imagetype: product.imageType,
                         isModalOpenEdit: true,
+                        minimumQuantity:product.minimumQuantity,
                         id: id,
                     });
 
@@ -156,7 +164,19 @@ export class Inventory extends Component {
                 <DefaultButton onClick={() => { this.handleArchive(item.id); }}>Archive</DefaultButton></>
         }
         if (column.fieldName === 'quantity') {
-            return <>{item.quantity}</>
+            console.log(item)
+            if (item.isLowStock) {
+                return <>{item.quantity}
+                    <TooltipHost content="Item has low stock!" id={item.id} calloutProps={{ gapSpace: 0 }}>
+
+                        <FontIcon aria-describedby={item.id} iconName="WarningSolid" style={{
+                            color: 'red', marginLeft: 5
+                            , fontSize: 25, height: 25, width: 25
+                        }} />
+                    </TooltipHost>
+
+                </>
+            }
         }
         else if (column.fieldName === 'categoryId') {
             const tmpCategory = this.state.categories.filter((category) => item.categoryId == category.key)[0];
@@ -168,6 +188,7 @@ export class Inventory extends Component {
             if (tmpuom === undefined) return <></>;
             return <>{tmpuom.text}</>
         }
+
         return item[column.fieldName];
     }
 
@@ -264,6 +285,7 @@ export class Inventory extends Component {
             categoryId: this.state.category,
             uOMId: this.state.UOM,
             quantity: this.state.quantity,
+            minimumQuantity: this.state.minimumQuantity,
             price: this.state.price,
             productImage: this.state.selectedFile,
             id: this.state.id,
@@ -283,6 +305,7 @@ export class Inventory extends Component {
             })
     }
     handleFileUpload = (e) => {
+      
         const reader = new FileReader();
         var file = e.target.files[0];
         reader.onload = (event) => {
@@ -305,6 +328,7 @@ export class Inventory extends Component {
     render() {
         loadTheme(myTheme);
         return (
+
             <div className='mainbg'>
                 <div style={{ height: '100%' }} className="sidebar">
                     <Navigation selectedNav='key3' />
@@ -318,11 +342,19 @@ export class Inventory extends Component {
                                 <SearchBox placeholder="Search using product name or product id"
                                     onSearch={this.handleOnSearch}
                                     onClear={this.getAllItems} />
+                                    
+                            </div>
+                            <div className="divbutton">
+                            <DefaultButton onClick={() => window.location.href = '/categories'}>Categories</DefaultButton>
+                            <DefaultButton onClick={() => window.location.href = '/uom'}>UOM</DefaultButton>
+                                    
                             </div>
                             <YesNo message='Do you want to continue archiving?' hideModal={(this.state.isYesNoHidden)} onAnswer={this.handleAnswer} />
                             <div className="divbutton">
+                                
                                 <PrimaryButton onClick={() => this.setState({ isModalOpen: true })} style={{ marginRight: 10 }}>Add new</PrimaryButton>
-                                <DefaultButton>Print</DefaultButton>
+
+                                <DefaultButton onClick={() => window.location.href = '/print'}> Print</DefaultButton>
                             </div>
                         </div>
                     </div>
@@ -342,6 +374,7 @@ export class Inventory extends Component {
                         theme={myTheme}
                     />
                     <Pagination pagecount={this.state.pagecount} currentpage={this.state.currentpage} page='inventory' />
+                    
                     <Modal
                         titleAriaId={1}
                         isOpen={this.state.isModalOpen}
@@ -390,7 +423,11 @@ export class Inventory extends Component {
                                 pattern="[0-9]*"
                                 type="number"
                                 onChange={(e) => this.setState({ quantity: e.target.value })} />
-
+                            <TextField label="Minimum Quantity"
+                                placeholder="Quantity"
+                                pattern="[0-9]*"
+                                type="number"
+                                onChange={(e) => this.setState({ minimumQuantity: e.target.value })} />
                             <TextField label="Price"
                                 placeholder="Price"
                                 pattern="[0-9]*"
@@ -460,6 +497,13 @@ export class Inventory extends Component {
                                 value={this.state.quantity}
                                 onChange={(e) => this.setState({ quantity: e.target.value })} />
 
+                            <TextField label="Minimum Quantity"
+                                placeholder="Quantity"
+                                pattern="[0-9]*"
+                                type="number"
+                                value={this.state.minimumQuantity}
+                                onChange={(e) => this.setState({ minimumQuantity: e.target.value })} />
+
                             <TextField label="Price"
                                 placeholder="Price"
                                 pattern="[0-9]*"
@@ -475,6 +519,7 @@ export class Inventory extends Component {
                 </div>
 
             </div>
+
         )
     }
 }

@@ -23,6 +23,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
             username = string.Empty;
             password = string.Empty;
             _httpClient = httpClient;
+          
         }
 
         [ObservableProperty]
@@ -34,11 +35,16 @@ namespace Thesis.Inventory.MobileApp.ViewModel
         [ObservableProperty]
         string password;
 
+
+        [ObservableProperty]
+        bool isPassword = true;
+
         [RelayCommand]
         async Task GoToRegisterPage()
         {
             await AppShell.Current.GoToAsync(nameof(RegisterPage));
         }
+
         [RelayCommand]
         async void Login()
         {
@@ -69,6 +75,9 @@ namespace Thesis.Inventory.MobileApp.ViewModel
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", response.Data.BearerToken);
                 if(response.Data.Status == Shared.Enums.UserStatusType.Verified)
                 {
+                    this.Username = string.Empty;
+                    this.Password = string.Empty;
+
                     await AppShell.Current.GoToAsync(nameof(HomePage));
                 }
                 else

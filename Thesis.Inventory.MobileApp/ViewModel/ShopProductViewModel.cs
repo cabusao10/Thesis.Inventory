@@ -19,7 +19,13 @@ namespace Thesis.Inventory.MobileApp.ViewModel
         {
             _httpClient = httpClient;
             _popupService = popup;
+            this.CardSize = (int)((Microsoft.Maui.Devices.DeviceDisplay.MainDisplayInfo.Width / 2 / DeviceDisplay.MainDisplayInfo.Density) - 20);
+
         }
+
+        [ObservableProperty]
+        int cardSize;
+
         [ObservableProperty]
         byte[] productImage;
 

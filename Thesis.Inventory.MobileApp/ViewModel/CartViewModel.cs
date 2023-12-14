@@ -1,15 +1,18 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Thesis.Inventory.MobileApp.Extensions;
 using Thesis.Inventory.MobileApp.Model;
 using Thesis.Inventory.Shared.DTOs.Cart;
+using Thesis.Inventory.Shared.Enums;
 using Thesis.Inventory.Shared.Models;
 
 namespace Thesis.Inventory.MobileApp.ViewModel
@@ -32,7 +35,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
         [ObservableProperty]
         bool isSuccessPayment;
         [ObservableProperty]
-        List<CartItemModel> carts;
+        ObservableCollection<CartItemModel> carts;
 
         [ObservableProperty]
         bool thereIsSelected;
@@ -62,11 +65,19 @@ namespace Thesis.Inventory.MobileApp.ViewModel
             if (selected.Any())
             {
 
-                this._popupService.ShowPopup<CheckOutViewModel>(o =>
+                var checkoutmodel = new CheckOutViewModel(_httpClient)
                 {
-                    o.TotalPrice = selected.Sum(x=> x.Quantity * x.Product.Price);
-                    o.CartId = selected.Select(x => x.Id).ToArray();
-                    o.PaymentType = "Cash on Delivery";
+                    TotalPrice = selected.Sum(x => x.Quantity * x.Product.Price),
+                    CartId = selected.Select(x => x.Id).ToArray(),
+                    PaymentType = "Cash on Delivery",
+                };
+
+                this._popupService.ShowPopup<CheckOutViewModel>(onPresenting: vm =>
+                {
+                    vm.TotalPrice = selected.Sum(x => x.Quantity * x.Product.Price);
+                    vm.CartId = selected.Select(x => x.Id).ToArray();
+                    vm.PaymentType = "Cash on Delivery";
+                    vm.CheckedOut += Vm_CheckedOut;
                 });
 
                 await Task.CompletedTask;
@@ -88,6 +99,27 @@ namespace Thesis.Inventory.MobileApp.ViewModel
                 //}
             }
         }
+
+        private void Vm_CheckedOut(int[] cartIds)
+        {
+            var tmpcarts = this.Carts.ToList();
+            tmpcarts.RemoveAll(x => cartIds.Contains(x.Id));
+
+            this.Carts = tmpcarts.ToObservableCollection();
+            if (this.Carts.Count == 0)
+            {
+                this.IsEmptyVisible = true;
+                this.ThereIsSelected = false;
+                this.IsCartItemVisible = false;
+            }
+            else
+            {
+                this.IsEmptyVisible = false;
+                this.ThereIsSelected = true;
+                this.IsCartItemVisible = true;
+            }
+        }
+
         public async void GetCarts()
         {
             var response = await _httpClient.GetAsync<List<CartModel>>("Cart/GetCart");
@@ -110,7 +142,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
                         UOMId = x.Product.UOMId,
                     },
                     Quantity = x.Quantity,
-                }).ToList();
+                }).ToObservableCollection();
 
                 if (this.Carts.Count == 0)
                 {

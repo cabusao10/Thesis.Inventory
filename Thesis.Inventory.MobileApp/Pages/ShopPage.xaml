@@ -23,15 +23,92 @@
                 <SearchBar Placeholder="Search for a product"
                            BackgroundColor="#EBE9E9" />
 
-                <CollectionView ItemsSource="{Binding Products}"
+                <!--<CollectionView ItemsSource="{Binding Products}"
                                 ItemsLayout="VerticalGrid, 2">
                     <CollectionView.ItemTemplate>
                         <DataTemplate >
                             <control:ShopProduct BindingContext="{Binding  Tmpproducts}"/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-                </CollectionView>
+                </CollectionView>-->
+                <FlexLayout BindableLayout.ItemsSource="{Binding Products}"
+                            Direction="Row"
+                            AlignItems="Start"
+                            AlignContent="Start"
+                            Wrap="Wrap" >
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="view:ShopProductViewModel">
+                            <VerticalStackLayout>
 
+                                <Frame Padding="-5,0,-5,5"
+                                       BackgroundColor="White"
+                                       Margin="5,10,5,0">
+
+                                    <Grid  RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="150" />
+                                            <RowDefinition Height="110" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid  WidthRequest="{Binding CardSize}"
+                                               MaximumWidthRequest="{Binding CardSize}"
+                                              Margin="10,0,10,0">
+                                            <ImageButton HeightRequest="120"
+                                                         MaximumHeightRequest="120"
+                                                         WidthRequest="120"
+                                                         MaximumWidthRequest="120"
+                                                         CornerRadius="10"
+                                                         Margin="18"
+                                                         Source="{Binding Image}" />
+
+                                        </Grid>
+                                        <Grid Grid.Row="1"
+                                              WidthRequest="{Binding CardSize}"
+                                              MaximumWidthRequest="{Binding CardSize}"
+                                              Margin="10,0,10,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="6*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid>
+
+                                                <VerticalStackLayout Grid.Column="0">
+                                                    <Label Text="{Binding ProductName}"
+                                                           FontAttributes="Bold"
+                                                           TextColor="#72767D"
+                                                           FontSize="Subtitle" />
+                                                    <HorizontalStackLayout Grid.Row="1">
+                                                        <Label Text="₱ "
+                                                               FontAttributes="Bold"
+                                                               TextColor="#FD5853"
+                                                               FontSize="Subtitle" />
+
+                                                        <Label Text="{Binding Price}"
+                                                               FontAttributes="Bold"
+                                                               TextColor="#FD5853"
+                                                               FontSize="Title" />
+                                                    </HorizontalStackLayout>
+                                                </VerticalStackLayout>
+
+                                            </Grid>
+                                            <Grid  Grid.Row="1">
+                                                <ImageButton BackgroundColor="#F1F1F2"
+                                                             HeightRequest="65"
+                                                             Padding="8"
+                                                             CornerRadius="5"
+                                                             BorderColor="Black"
+                                                             Command="{Binding AddToCartCommand}"
+                                                             Source="add_to_cart.png" />
+                                            </Grid>
+                                        </Grid>
+
+                                    </Grid>
+                                </Frame>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
             </VerticalStackLayout>
         </ScrollView>
     </RefreshView>

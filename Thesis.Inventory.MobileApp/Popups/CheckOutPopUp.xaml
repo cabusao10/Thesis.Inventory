@@ -24,6 +24,7 @@
             <Picker Title="Select payment method"
                     ItemsSource="{Binding PaymentMethods}"
                     SelectedItem="{Binding PaymentType}"
+                    SelectedIndex="0"
                   >
             </Picker>
             <Button Text="Check out" Command="{Binding CheckOutCommand}"/>

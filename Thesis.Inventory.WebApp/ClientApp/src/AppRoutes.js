@@ -1,4 +1,5 @@
 import Archives from "./components/Archives";
+import { Category } from "./components/Category";
 import { Counter } from "./components/Counter";
 import { Dashboard } from "./components/Dashboard";
 import { FetchData } from "./components/FetchData";
@@ -8,8 +9,11 @@ import { Login } from "./components/Login";
 import { Main } from "./components/Main";
 import { Message } from "./components/Message";
 import { Orders } from "./components/Orders";
+import { PrintInventory } from "./components/PrintInventory";
 import { Register } from "./components/Register";
+import { UOM } from "./components/UOM";
 import Users from "./components/Users";
+import { Validation } from "./components/Validate";
 import { Welcome } from "./components/Welcome";
 
 const AppRoutes = [
@@ -64,6 +68,26 @@ const AppRoutes = [
   {
     path: '/chat',
     element: <Message />
+  }
+  ,
+  {
+    path: '/validate',
+    element: <Validation />
+  }
+  ,
+  {
+    path: '/print',
+    element: <PrintInventory />
+  }
+  ,
+  {
+    path: '/categories',
+    element: <Category />
+  }
+  ,
+  {
+    path: '/uom',
+    element: <UOM />
   }
 ];
 

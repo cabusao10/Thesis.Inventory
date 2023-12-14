@@ -24,7 +24,7 @@
                     <RowDefinition  Height="*" />
                     <RowDefinition  Height="50" />
                 </Grid.RowDefinitions>
-               
+              
                 <ListView ItemsSource="{Binding Carts}"
                           SelectionMode="None"
                           RowHeight="170">

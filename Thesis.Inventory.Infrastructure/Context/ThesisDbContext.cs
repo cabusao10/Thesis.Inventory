@@ -23,6 +23,7 @@ namespace Thesis.Inventory.Infrastructure.Context
         public DbSet<OrderEntity> Orders { get; set; }
         public DbSet<ChatRoomEntity> ChatRooms { get; set; }
         public DbSet<ChatMessageEntity> ChatRoomMessages { get; set; }
+        public DbSet<ShoppingCartEntity> ShoppingCarts { get; set; }
 
         public async Task<int> SaveChanges()
         {

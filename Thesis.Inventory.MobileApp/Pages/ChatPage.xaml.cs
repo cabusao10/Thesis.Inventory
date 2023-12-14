@@ -7,6 +7,14 @@ public partial class ChatPage : ContentPage
 	public ChatPage(ChatViewModel model)
 	{
 		this.BindingContext = model;
-		InitializeComponent();
+
+        Shell.SetNavBarIsVisible(this, false);
+        InitializeComponent();
 	}
+    public ChatPage()
+    {
+
+        Shell.SetNavBarIsVisible(this, false);
+        InitializeComponent();
+    }
 }

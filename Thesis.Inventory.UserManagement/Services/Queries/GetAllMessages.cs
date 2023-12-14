@@ -67,7 +67,7 @@ namespace Thesis.Inventory.UserManagement.Services.Queries
                     }
 
 
-                    var roomName = $"{String.Join("-", new[] { user.Id, target_user.Id }.OrderBy(x => x).ToArray())}";
+                    var roomName = $"{query.TargetUser }";
 
                     var room = await this.ThesisUnitOfWork.ChatRooms.Entities.Where(x => x.Name == roomName).FirstOrDefaultAsync();
                     

@@ -46,6 +46,12 @@ const UserRole = {
     3: 'Supplier',
 }
 
+const UserRoleoption :IComboBoxOption[] = [
+    {key:'0',text:'Admin'},
+    {key:'1',text:'Staff'},
+    {key:'2',text:'Consumer'},
+    {key:'3',text:'Supplier'},
+]
 const UserStatus = {
     0: 'Not Verified',
     1: 'Verified',
@@ -60,7 +66,7 @@ export default class Users extends Component {
             currentpage: 1,
             pagecount: 0,
             isModalOpen: false,
-
+            id: 0,
             provinces: [],
             fullname: '',
             businessName: '',
@@ -158,6 +164,33 @@ export default class Users extends Component {
 
             });
     }
+
+    handleUpdate = async () => {
+        var request = {
+            id: this.state.id,
+            businessName: this.state.businessName,
+            fullname: this.state.fullname,
+            contactNumber: this.state.contactNumber,
+            address: this.state.address,
+            zipCode: this.state.zipCode,
+            provinceId: this.state.provinceId,
+            birthdate: this.state.birthdate,
+            gender: this.state.gender,
+            role: this.state.role
+        }
+
+        console.log(request);
+        axios.patch(process.env.REACT_APP_API_URL + "User/UpdateUser", request)
+            .then(res => {
+                var response = res.data;
+                if (response.succeeded) {
+                    alert("Success updating the user.")
+                }
+                else {
+
+                }
+            })
+    }
     render() {
         loadTheme(myTheme);
 
@@ -242,14 +275,22 @@ export default class Users extends Component {
                                 value={this.state.contactNumber}
                                 onChange={e => { this.setState({ contactNumber: e.target.value }) }} />
                         </div>
+                        <div class="input-box">
+                            <ComboBox label='Role'
+                                options={UserRoleoption} required
+                                onItemClick={(o, i, val) => { this.setState({ role: i.key }) }}
+                                selectedKey={`${this.state.role}`}
+                                onChange={(o, i, val) => { this.setState({ role: i.key }) }} />
+                        </div>
                     </div>
 
                     <div className='modal-header'>
-                        <PrimaryButton onClick={this.handleAddNewProduct}>Submit</PrimaryButton>
+                        <PrimaryButton onClick={this.handleUpdate}>Submit</PrimaryButton>
                     </div>
                 </Modal>
 
-            </div>)
+            </div>
+        )
     }
 }
 const cancelIcon: IIconProps = { iconName: 'Cancel' };

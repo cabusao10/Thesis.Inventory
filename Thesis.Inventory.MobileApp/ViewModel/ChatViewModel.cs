@@ -51,7 +51,8 @@ namespace Thesis.Inventory.MobileApp.ViewModel
 
         private async void GetAllOldMessages(string adminusername)
         {
-            var response = await _httpClient.GetAsync<ChatRoomMessageModel[]>($"Chat/GetMessages?user={adminusername}");
+            var myusername = await SecureStorage.GetAsync("username");
+            var response = await _httpClient.GetAsync<ChatRoomMessageModel[]>($"Chat/GetMessages?user={myusername}");
             if (response.Succeeded)
             {
                 response.Data.ToList().ForEach(x =>
@@ -88,6 +89,10 @@ namespace Thesis.Inventory.MobileApp.ViewModel
         [RelayCommand]
         async Task SendMessage()
         {
+            if(this.Chat == string.Empty)
+            {
+                return;
+            }
             var chatmodel = new ChatModel
             {
                 Message = this.Chat,
@@ -95,7 +100,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
             };
 
             this.Chat = string.Empty;
-            await this._hubConnection.SendAsync("SendMessage", "cabusao10", JsonSerializer.Serialize(chatmodel));
+            await this._hubConnection.SendAsync("SendMessageToAdmin", JsonSerializer.Serialize(chatmodel));
 
         }
     }

@@ -9,5 +9,12 @@ public partial class CheckOutPopUp : Popup
 	{
 		this.BindingContext = model;
 		InitializeComponent();
+
+        model.CheckedOut += Model_CheckedOut;
 	}
+
+    private async void Model_CheckedOut(int[] ids)
+    {
+       await this.CloseAsync();
+    }
 }

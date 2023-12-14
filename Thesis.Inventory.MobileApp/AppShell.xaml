@@ -26,15 +26,18 @@
         </Tab>
         <Tab 
              Icon="icon_cart.png">
-            <ShellContent Route="shop"
+            <ShellContent Route="cart"
                           ContentTemplate="{DataTemplate views:CartPage}" />
         </Tab>
         <Tab 
-             Icon="icon_setting.png">
+             Icon="msg.png">
             <ShellContent Route="settings"
                           ContentTemplate="{DataTemplate views:ChatPage}" />
         </Tab>
-
+        <Tab Icon="icon_setting.png">
+            <ShellContent Route="settings"
+                          ContentTemplate="{DataTemplate views:SettingsPage}" />
+        </Tab>
     </TabBar>
 
 </Shell>

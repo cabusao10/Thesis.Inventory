@@ -1,7 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,14 +23,17 @@ namespace Thesis.Inventory.MobileApp.ViewModel
         public ProfileViewModel(HttpClient httpClient, UserOrderModel userorder)
         {
             this._httpClient = httpClient;
-
+            
             LoadData();
         }
 
         public async void LoadData()
         {
+            this.IsLoading = true;
             await this.GetProfile();
             await this.GetOders();
+
+            this.IsLoading = false;
         }
         [ObservableProperty]
         bool isRefreshing;
@@ -37,16 +42,20 @@ namespace Thesis.Inventory.MobileApp.ViewModel
         async Task Refresh()
         {
             this.IsRefreshing = false;
-            this.Orders = new List<UserOrderModel>();
-
+            this.IsLoading = true;
             await this.GetOders();
+            await this.GetProfile();
             await Task.CompletedTask;
+            this.IsLoading = false;
         }
         [ObservableProperty]
         GetUserResponse profile;
 
         [ObservableProperty]
-        List<UserOrderModel> orders;
+        bool isLoading;
+
+        [ObservableProperty]
+        ObservableCollection<UserOrderModel> orders;
 
         public async Task GetProfile()
         {
@@ -87,7 +96,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
                     Quantity = x.Quantity,
                     Status = x.Status,
 
-                }).ToList();
+                }).ToObservableCollection();
 
                 if (this.Orders.Count == 0)
                 {

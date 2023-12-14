@@ -14,7 +14,9 @@
                 <RowDefinition Height="320"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
+            <ActivityIndicator IsRunning="{Binding IsLoading}" 
+                               HeightRequest="100" WidthRequest="100"
+                               Grid.RowSpan="2"/>
             <VerticalStackLayout Spacing="10" Grid.Row="0">
                 <Border HeightRequest="160"
                         WidthRequest="160"

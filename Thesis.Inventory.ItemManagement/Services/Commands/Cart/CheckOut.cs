@@ -78,6 +78,15 @@ namespace Thesis.Inventory.ItemManagement.Services.Commands.Cart
                         Quantity = x.Quantity,
                         UserId = user.Id,
                     }).ToList();
+
+                    foreach (var item in checkoutitems)
+                    {
+                        var product = this.ThesisUnitOfWork.Products.Entities.Where(x => x.Id == item.ProductId).First();
+                        product.Quantity-=item.Quantity;
+
+                        await this.ThesisUnitOfWork.Products.UpdateAsync(product);
+                    }
+
                     await this.ThesisUnitOfWork.ShoppingCarts.DeleteRangeAsync(existingCart.ToArray());
                     await this.ThesisUnitOfWork.Orders.AddRangeAsync(checkoutitems.ToArray());
                     await this.ThesisUnitOfWork.Save();

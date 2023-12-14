@@ -10,11 +10,21 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+
             <RowDefinition Height="*" />
             <RowDefinition Height="100" />
         </Grid.RowDefinitions>
-
-        <CollectionView ItemsSource="{Binding Messages}"
+        <HorizontalStackLayout Spacing="10"
+                               BackgroundColor="#F8F8F8">
+            <Image Margin="10,0,0,0" Source="msg" HeightRequest="30"/>
+            <Label VerticalTextAlignment="Center"
+                   TextColor="#0C0C0C"
+                   FontSize="25"
+                   HeightRequest="50"
+                   Text="Chatting with Admin" />
+        </HorizontalStackLayout>
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Messages}"
                   
                   ItemsUpdatingScrollMode="KeepLastItemInView"
                   VerticalOptions="FillAndExpand"
@@ -76,8 +86,10 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
         <VerticalStackLayout Padding="10,0,10,0"
-                             Grid.Row="1">
+                             BackgroundColor="#F8F8F8"
+                             Grid.Row="2">
             <Entry Text="{Binding Chat}"
+                   Placeholder="Type a message"
                    Keyboard="Chat">
                 <Entry.Behaviors>
                     <toolkit:EventToCommandBehavior  EventName="Completed" Command="{Binding SendMessageCommand}"/>

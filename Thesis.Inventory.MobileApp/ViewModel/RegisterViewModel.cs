@@ -28,6 +28,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
             _httpClient = httpClient;
             GetProvinces();
             this.BirthDate = DateTime.Now;
+            this.MaximumDate = DateTime.Now.Date.AddYears(-18);
         }
 
         [ObservableProperty]
@@ -50,6 +51,9 @@ namespace Thesis.Inventory.MobileApp.ViewModel
 
         [ObservableProperty]
         string address;
+
+        [ObservableProperty]
+        DateTime maximumDate;
 
         [ObservableProperty]
         string zipCode;
@@ -95,6 +99,11 @@ namespace Thesis.Inventory.MobileApp.ViewModel
                 Role = UserRoleType.Consumer,
             };
 
+            if(this.Password.Length < 8 || !this.Password.Any(c => char.IsUpper(c)))
+            {
+                await Toast.Make("Passwod should be at least 8 characters length and has uppercase and lowercase.").Show();
+                return;
+            }
             var response = await _httpClient.PostAsync<bool>("user/Register", request);
 
             if (response.Succeeded)
@@ -105,7 +114,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
             }
             else
             {
-                Toast.Make(response.Message);
+                await Toast.Make(response.Message).Show();
             }
         }
 

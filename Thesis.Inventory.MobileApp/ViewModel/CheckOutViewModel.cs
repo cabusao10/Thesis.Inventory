@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Maui.Alerts;
+﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -20,7 +22,7 @@ namespace Thesis.Inventory.MobileApp.ViewModel
         {
 
             _httpClient = httpClient;
-            this.PaymentMethods = new string[] { "Online Payment", "Cash on Delivery" };
+            this.PaymentMethods = new string[] { "Cash on Delivery" };
         }
         [ObservableProperty]
         double totalPrice;
@@ -38,23 +40,31 @@ namespace Thesis.Inventory.MobileApp.ViewModel
         async Task CheckOut()
         {
             // check if there is selected
-            Uri uri = new Uri("https://app.nextpay.world/#/pl/66eFe4aSO");
-            await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
-            //var request = new CheckoutRequest
-            //{
-            //    CartIds = this.CartId,
-            //    PaymentType = (PaymentType)Enum.Parse(typeof(PaymentType), this.PaymentType),
-            //};
-            //var response = await _httpClient.PostAsync<bool>("Cart/Checkout", request);
+            //Uri uri = new Uri("https://app.nextpay.world/#/pl/66eFe4aSO");
+            //await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+            var request = new CheckoutRequest
+            {
+                CartIds = this.CartId,
+                PaymentType = (PaymentType)this.PaymentMethods.ToList().IndexOf(this.PaymentType),
+            };
+            var response = await _httpClient.PostAsync<bool>("Cart/Checkout", request);
 
-            //if (response.Succeeded)
-            //{
-            //    Toast.Make(response.Message);
-            //}
-            //else
-            //{
-            //    Toast.Make(response.Message);
-            //}
+            if (response.Succeeded)
+            {
+                var toast = Toast.Make(response.Message, CommunityToolkit.Maui.Core.ToastDuration.Short, 14);
+
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+                await toast.Show(cancellationTokenSource.Token);
+            }
+            else
+            {
+                Toast.Make(response.Message);
+            }
+            this.CheckedOut.Invoke(this.CartId);
         }
+
+        public delegate void DoneCheckingOut(int[] cartId);
+        public event DoneCheckingOut CheckedOut;
     }
 }

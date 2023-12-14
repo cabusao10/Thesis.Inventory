@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Views;
 using Thesis.Inventory.MobileApp.ViewModel;
 
@@ -19,6 +20,11 @@ public partial class AddToCartPopUp : Popup
         if (result)
         {
             await this.CloseAsync();
+            var toast = Toast.Make("Success adding to cart.", CommunityToolkit.Maui.Core.ToastDuration.Short, 14);
+
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+            await toast.Show(cancellationTokenSource.Token);
         }
     }
 }

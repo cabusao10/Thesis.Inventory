@@ -54,12 +54,11 @@ export class Welcome extends Component {
                 <div className={styles.center}>
                     <h1 class={styles.welcometxt}>Welcome to TrackIn Sales</h1>
                     <p class={styles.tagline}>"Efficiently Manage Your Inventory, Boost Your Business."</p>
-                    <p class={styles.role}>What are you? :</p>
                     <div class={styles.buttoncontainer}>
                         <PrimaryButton onClick={this.signInClicked} >Sign In</PrimaryButton>
                     </div>
                     <div class={styles.signup_link}>
-                        Not a member? <a href="registration.php">Signup</a>
+                        Not a member? <a href="/register">Signup</a>
                     </div>
                 </div>
             </div>
