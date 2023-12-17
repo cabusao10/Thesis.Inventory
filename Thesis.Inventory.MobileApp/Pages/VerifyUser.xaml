@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
              x:DataType="views:VerifyViewModel"
+             BackgroundColor="#FAFAFA"
              x:Class="Thesis.Inventory.MobileApp.Pages.VerifyUser"
              Title="VerifyUser">
     <Grid>
