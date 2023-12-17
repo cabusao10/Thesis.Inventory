@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Thesis.Inventory.MobileApp.Pages.SettingsPage"
              Shell.NavBarIsVisible="False"
+             BackgroundColor="#FAFAFA"
              xmlns:views="clr-namespace:Thesis.Inventory.MobileApp.ViewModel"
              x:DataType="views:SettingsViewModel"
              Title="SettingsPage">
